@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 from apps.order.models import Order
 # Create your models here.
 
@@ -18,7 +19,7 @@ class Payment(models.Model):
         CANCELED = 'CANCELED', 'Canceled'
 
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    amount = models.IntegerField()
+    amount = models.IntegerField(validators=[MinValueValidator(1)])
     method = models.CharField(max_length=10, choices=Method.choices)
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
