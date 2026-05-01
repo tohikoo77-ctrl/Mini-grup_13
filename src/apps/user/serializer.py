@@ -1,4 +1,5 @@
 from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 from .models import User
 from rest_framework.exceptions import ValidationError
 from .utils import is_uzbek_phone_valid
