@@ -24,3 +24,19 @@ class VerifyCodeSerializer(serializers.Serializer):
 
 class ResendCodeSerializer(serializers.Serializer):
     email = serializers.EmailField()
+
+
+# Login Serializer
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
+# Forgot Password (Send Code) Serializer
+class ForgotPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+# Reset Password Serializer
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    code = serializers.CharField(max_length=6)
+    new_password = serializers.CharField(write_only=True, min_length=6)
