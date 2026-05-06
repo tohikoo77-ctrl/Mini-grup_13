@@ -15,13 +15,9 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG")
-if DEBUG == "False":
-    DEBUG = False
-else:
-    DEBUG = True
+DEBUG = env.bool("DEBUG", default=False)
 
-
+#allowed hosts
 ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(",")
 
 
@@ -46,6 +42,7 @@ INSTALLED_APPS = [
     # other apps
     'rest_framework',
     'corsheaders',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -111,7 +108,16 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# drf-spectacular settings
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Mini Group 13 API',
+    'DESCRIPTION': 'API documentation for Mini Group 13 project',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 
