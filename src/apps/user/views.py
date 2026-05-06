@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from apps.user.services import UserService
 from .models import User
 from .serializer import ResendCodeSerializer, UserSerializer, VerifyCodeSerializer
+from .serializer import LoginSerializer, ForgotPasswordSerializer, ResetPasswordSerializer
 def list(self, request):
         queryset = User.objects.all()
         serializer = UserSerializer(queryset, many=True)
@@ -71,3 +72,52 @@ def destroy(self, request, pk=None):
         user = get_object_or_404(User, pk=pk)
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# --- Auth Endpoints ---
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+from rest_framework.authtoken.models import Token
+from rest_framework.authentication import TokenAuthentication
+
+class LoginView(APIView):
+        permission_classes = [AllowAny]
+        def post(self, request):
+                serializer = LoginSerializer(data=request.data)
+                serializer.is_valid(raise_exception=True)
+                user = UserService.login(
+                        serializer.validated_data['email'],
+                        serializer.validated_data['password']
+                )
+                token, _ = Token.objects.get_or_create(user=user)
+                return Response({"token": token.key, "user_id": user.id})
+
+
+class LogoutView(APIView):
+        authentication_classes = [TokenAuthentication]
+        def post(self, request):
+                request.user.auth_token.delete()
+                UserService.logout(request)
+                return Response({"message": "Logged out successfully."})
+
+
+class ForgotPasswordView(APIView):
+        permission_classes = [AllowAny]
+        def post(self, request):
+                serializer = ForgotPasswordSerializer(data=request.data)
+                serializer.is_valid(raise_exception=True)
+                UserService.send_password_reset_code(serializer.validated_data['email'])
+                return Response({"message": "Password reset code sent."})
+
+
+class ResetPasswordView(APIView):
+        permission_classes = [AllowAny]
+        def post(self, request):
+                serializer = ResetPasswordSerializer(data=request.data)
+                serializer.is_valid(raise_exception=True)
+                UserService.reset_password(
+                        serializer.validated_data['email'],
+                        serializer.validated_data['code'],
+                        serializer.validated_data['new_password']
+                )
+                return Response({"message": "Password reset successful."})

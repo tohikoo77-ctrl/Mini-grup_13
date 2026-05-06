@@ -1,22 +1,57 @@
 import random
 from datetime import timedelta
-from django.db import transaction
-from django.contrib.auth import get_user_model
 from typing import Any, Dict
+from django.db import transaction
+
+
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
-User = get_user_model()
+from .models import User
+
+
 
 class UserService:
-    """
-    Service layer to handle business logic for the User model.
-    Encapsulates database operations and logic to keep views and serializers clean.
-    """
+    @staticmethod
+    def login(email: str, password: str) -> User:
+        from django.contrib.auth import authenticate
+        user = authenticate(email=email, password=password)
+        if user is None:
+            raise ValidationError({"detail": "Invalid email or password."})
+        if not user.is_active:
+            raise ValidationError({"detail": "User account is not active."})
+        return user
 
     @staticmethod
-    def _generate_verification_code(user: User) -> str:
-        """Generates a 6-digit code and sets a 10-minute expiration."""
+    def logout(request) -> None:
+        from django.contrib.auth import logout
+        logout(request)
+
+    @staticmethod
+    def send_password_reset_code(email: str) -> None:
+        user = User.objects.filter(email=email).first()
+        if not user:
+            raise ValidationError({"email": "User not found."})
+        code = UserService._generate_verification_code(user)
+        print(f"PASSWORD RESET CODE for {user.email}: {code}")
+
+    @staticmethod
+    def reset_password(email: str, code: str, new_password: str) -> None:
+        user = User.objects.filter(email=email).first()
+        if not user:
+            raise ValidationError({"email": "User not found."})
+        if user.verification_code != code:
+            raise ValidationError({"code": "Invalid code."})
+        if timezone.now() > user.verification_code_expires_at:
+            raise ValidationError({"code": "Code expired."})
+        user.set_password(new_password)
+        user.verification_code = None
+        user.verification_code_expires_at = None
+        user.save()
+
+    @staticmethod
+    def _generate_verification_code(user:  User) -> str:
+     
         code = str(random.randint(100000, 999999))
         user.verification_code = code
         user.verification_code_expires_at = timezone.now() + timedelta(minutes=10)
@@ -25,12 +60,8 @@ class UserService:
 
     @staticmethod
     @transaction.atomic
-    def create_user(data: Dict[str, Any]) -> User:
-        """
-        Creates a new user instance.
-        Uses the create_user manager method to handle password hashing automatically.
-        Sets user to inactive until verified.
-        """
+    def create_user(data: Dict[str, Any]) ->   User:
+       
         password = data.pop('password')
         user = User.objects.create_user(
             password=password,
@@ -38,7 +69,7 @@ class UserService:
             **data
         )
         code = UserService._generate_verification_code(user)
-        # Replace with actual email/SMS sending logic in production
+      
         print(f"VERIFICATION CODE for {user.email}: {code}")
         return user
 
