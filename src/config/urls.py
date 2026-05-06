@@ -23,6 +23,8 @@ urlpatterns = [
     path('api/cart/', include('apps.cart.urls')),
     path('api/products/', include('apps.product.urls')),
     path('api/categories/', include('apps.category.urls')),
+    path('api/users/', include('apps.user.urls')),
+    path('api/orders/', include('apps.order.urls')),
     # drf-spectacular schema and docs
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
