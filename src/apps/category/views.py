@@ -1,3 +1,7 @@
+from drf_spectacular.utils import extend_schema, OpenApiResponse
+    @extend_schema(request=CategorySerializer, responses={201: OpenApiResponse(description="Category created.")})
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404

@@ -1,3 +1,7 @@
+from drf_spectacular.utils import extend_schema, OpenApiResponse
+    @extend_schema(request=OrderSerializer, responses={201: OpenApiResponse(description="Order created.")})
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
