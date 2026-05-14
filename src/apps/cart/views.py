@@ -47,6 +47,9 @@ class CartViewSet(viewsets.ViewSet):
         cart.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+
+
 class CartItemViewSet(viewsets.ViewSet):
     def list(self, request):
         queryset = CartItem.objects.all()
@@ -54,10 +57,15 @@ class CartItemViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     def create(self, request):
+
+        cart = Cart.objects.first()   # vaqtinchalik test uchun
+
         serializer = CartItemSerializer(data=request.data)
+
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(cart=cart)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk=None):

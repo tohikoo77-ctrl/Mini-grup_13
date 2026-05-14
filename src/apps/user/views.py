@@ -2,6 +2,8 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from apps.user.services import UserService
 from .models import User
@@ -84,24 +86,31 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
 
 class LoginView(APIView):
-        permission_classes = [AllowAny]
-        def post(self, request):
-                serializer = LoginSerializer(data=request.data)
-                serializer.is_valid(raise_exception=True)
-                user = UserService.login(
-                        serializer.validated_data['email'],
-                        serializer.validated_data['password']
-                )
-                token, _ = Token.objects.get_or_create(user=user)
-                return Response({"token": token.key, "user_id": user.id})
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = LoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user = UserService.login(
+            serializer.validated_data['email'],
+            serializer.validated_data['password']
+        )
+
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            "refresh": str(refresh),
+            "access": str(refresh.access_token),
+            "user_id": user.id
+        })
 
 
 class LogoutView(APIView):
-        authentication_classes = [TokenAuthentication]
-        def post(self, request):
-                request.user.auth_token.delete()
-                UserService.logout(request)
-                return Response({"message": "Logged out successfully."})
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        return Response({"message": "Logged out successfully."})
 
 
 class ForgotPasswordView(APIView):
