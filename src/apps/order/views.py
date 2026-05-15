@@ -23,9 +23,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
-        """Automatically set the current user when creating an order.
-        Because humans enjoy making software ask who they are even after logging in.
-        """
+       
         serializer.save(user=self.request.user)
 
     @extend_schema(
