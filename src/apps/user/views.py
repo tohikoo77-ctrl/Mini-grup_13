@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from drf_spectacular.utils import extend_schema, OpenApiResponse
 from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -24,6 +25,10 @@ class UserViewSet(viewsets.ViewSet):
             return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @extend_schema(
+        request=UserSerializer,
+        responses={201: OpenApiResponse(description="Registration successful. Verify your email.")}
+    )
     @action(detail=False, methods=['post'], url_path='register')
     def register(self, request):
         serializer = UserSerializer(data=request.data)
