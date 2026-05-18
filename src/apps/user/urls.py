@@ -11,9 +11,10 @@ from .views import (
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename='user')
 
-from apps.user.views import SendVerificationCodeAPIView, VerifyEmailCodeAPIView
+from apps.user.views import LoginAPIView, SendVerificationCodeAPIView, VerifyEmailCodeAPIView
 
 urlpatterns = [
+    path("auth/login/", LoginAPIView.as_view(), name="user-login"),
     path(
         "verification/send-code/",
         SendVerificationCodeAPIView.as_view(),
