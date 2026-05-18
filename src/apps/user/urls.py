@@ -11,10 +11,28 @@ from .views import (
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename='user')
 
+from apps.user.views import SendVerificationCodeAPIView, VerifyEmailCodeAPIView
+
 urlpatterns = [
+    path(
+        "verification/send-code/",
+        SendVerificationCodeAPIView.as_view(),
+        name="user-send-verification-code",
+    ),
+    path(
+        "verification/verify-code/",
+        VerifyEmailCodeAPIView.as_view(),
+        name="user-verify-email-code",
+    ),
     path('', include(router.urls)),
     path('auth/login/', LoginView.as_view(), name='login'),
     path('auth/logout/', LogoutView.as_view(), name='logout'),
     path('auth/forgot-password/', ForgotPasswordView.as_view(), name='forgot-password'),
     path('auth/reset-password/', ResetPasswordView.as_view(), name='reset-password'),
 ]
+from django.urls import path
+
+from apps.user.views import (
+    SendVerificationCodeAPIView,
+    VerifyEmailCodeAPIView,
+)

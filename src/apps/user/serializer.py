@@ -40,3 +40,56 @@ class ResetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
     code = serializers.CharField(max_length=6)
     new_password = serializers.CharField(write_only=True, min_length=6)
+from django.contrib.auth import get_user_model
+from rest_framework import serializers
+
+from apps.user.models import EmailVerificationCode, send_user_verification_code
+
+
+class SendVerificationCodeSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        User = get_user_model()
+        if not User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("User with this email does not exist.")
+        return value
+
+    def save(self, **kwargs):
+        User = get_user_model()
+        user = User.objects.get(email=self.validated_data["email"])
+        send_user_verification_code(user)
+        return user
+
+
+class VerifyEmailCodeSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    code = serializers.CharField(max_length=6, min_length=6)
+
+    def validate(self, attrs):
+        verification = (
+            EmailVerificationCode.objects.filter(
+                email=attrs["email"],
+                code=attrs["code"],
+                is_used=False,
+            )
+            .order_by("-created_at")
+            .first()
+        )
+        if verification is None:
+            raise serializers.ValidationError("Invalid verification code.")
+
+        attrs["verification"] = verification
+        return attrs
+
+    def save(self, **kwargs):
+        verification = self.validated_data["verification"]
+        verification.is_used = True
+        verification.save(update_fields=["is_used"])
+
+        user = verification.user
+        if hasattr(user, "is_verified"):
+            user.is_verified = True
+            user.save(update_fields=["is_verified"])
+
+        return user
