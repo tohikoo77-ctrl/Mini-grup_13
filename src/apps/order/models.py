@@ -43,3 +43,33 @@ class OrderItem(models.Model):
     def get_total_price(self):
         """Calculate total price for this item"""
         return self.quantity * self.price
+
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+
+
+@receiver(pre_save, sender="order.OrderItem")
+def set_order_item_price(sender, instance, **kwargs):
+    if not instance.product_id:
+        return
+
+    unit_price = instance.product.price
+    quantity = instance.quantity or 1
+    subtotal = unit_price * quantity
+
+    discount_sum = (
+        getattr(instance, "discount_sum", 0)
+        or getattr(instance, "discount_amount", 0)
+        or 0
+    )
+    discount_percent = getattr(instance, "discount_percent", 0) or 0
+    discount = discount_sum + (subtotal * discount_percent / 100)
+    total_price = max(subtotal - discount, 0)
+
+    if instance.price is None:
+        instance.price = unit_price
+
+    if hasattr(instance, "total_price"):
+        instance.total_price = total_price
+    elif hasattr(instance, "total"):
+        instance.total = total_price
