@@ -129,3 +129,52 @@ class ResetPasswordView(APIView):
                         serializer.validated_data['new_password']
                 )
                 return Response({"message": "Password reset successful."})
+from rest_framework import generics, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from apps.user.serializer import SendVerificationCodeSerializer, VerifyEmailCodeSerializer
+
+try:
+    from drf_yasg.utils import swagger_auto_schema
+except ImportError:
+    try:
+        from drf_spectacular.utils import extend_schema
+
+        def swagger_auto_schema(*args, **kwargs):
+            request_body = kwargs.get("request_body")
+            return extend_schema(request=request_body)
+    except ImportError:
+        def swagger_auto_schema(*args, **kwargs):
+            def decorator(func):
+                return func
+
+            return decorator
+
+
+class SendVerificationCodeAPIView(generics.GenericAPIView):
+    serializer_class = SendVerificationCodeSerializer
+
+    @swagger_auto_schema(request_body=SendVerificationCodeSerializer)
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            {"detail": "Verification code sent to email."},
+            status=status.HTTP_200_OK,
+        )
+
+
+class VerifyEmailCodeAPIView(generics.GenericAPIView):
+    serializer_class = VerifyEmailCodeSerializer
+
+    @swagger_auto_schema(request_body=VerifyEmailCodeSerializer)
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            {"detail": "Email verified successfully."},
+            status=status.HTTP_200_OK,
+        )
