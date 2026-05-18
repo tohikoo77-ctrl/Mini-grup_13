@@ -19,10 +19,12 @@ class UserViewSet(viewsets.ViewSet):
     def create(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            user = UserService.create_user(serializer.validated_data)
-            return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+            user = UserService.create_user(**serializer.validated_data)
+            return Response(
+            UserSerializer(user).data,
+            status=status.HTTP_201_CREATED
+        )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     @extend_schema(
         request=UserSerializer,
         responses={201: OpenApiResponse(description="Registration successful. Verify your email.")}
