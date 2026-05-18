@@ -93,3 +93,14 @@ class VerifyEmailCodeSerializer(serializers.Serializer):
             user.save(update_fields=["is_verified"])
 
         return user
+
+
+class LoginRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=False)
+    username = serializers.CharField(required=False)
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        if not attrs.get("email") and not attrs.get("username"):
+            raise serializers.ValidationError("Email or username is required.")
+        return attrs

@@ -133,29 +133,42 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.user.serializer import SendVerificationCodeSerializer, VerifyEmailCodeSerializer
+from apps.user.serializer import (
+    LoginRequestSerializer,
+    SendVerificationCodeSerializer,
+    VerifyEmailCodeSerializer,
+)
+from apps.user.swagger import swagger_post
 
 try:
-    from drf_yasg.utils import swagger_auto_schema
+    from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema_view, extend_schema
 except ImportError:
-    try:
-        from drf_spectacular.utils import extend_schema
+    def extend_schema(*args, **kwargs):
+        def decorator(obj):
+            return obj
 
-        def swagger_auto_schema(*args, **kwargs):
-            request_body = kwargs.get("request_body")
-            return extend_schema(request=request_body)
-    except ImportError:
-        def swagger_auto_schema(*args, **kwargs):
-            def decorator(func):
-                return func
+        return decorator
 
-            return decorator
+    def extend_schema_view(**kwargs):
+        def decorator(cls):
+            return cls
+
+        return decorator
+
+    class OpenApiTypes:
+        INT = int
+
+    class OpenApiParameter:
+        PATH = "path"
+
+        def __init__(self, *args, **kwargs):
+            pass
 
 
 class SendVerificationCodeAPIView(generics.GenericAPIView):
     serializer_class = SendVerificationCodeSerializer
 
-    @swagger_auto_schema(request_body=SendVerificationCodeSerializer)
+    @swagger_post(SendVerificationCodeSerializer)
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -169,7 +182,7 @@ class SendVerificationCodeAPIView(generics.GenericAPIView):
 class VerifyEmailCodeAPIView(generics.GenericAPIView):
     serializer_class = VerifyEmailCodeSerializer
 
-    @swagger_auto_schema(request_body=VerifyEmailCodeSerializer)
+    @swagger_post(VerifyEmailCodeSerializer)
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -178,3 +191,37 @@ class VerifyEmailCodeAPIView(generics.GenericAPIView):
             {"detail": "Email verified successfully."},
             status=status.HTTP_200_OK,
         )
+
+
+try:
+    from rest_framework_simplejwt.views import TokenObtainPairView
+except ImportError:
+    TokenObtainPairView = None
+
+
+if TokenObtainPairView is not None:
+    class LoginAPIView(TokenObtainPairView):
+        @swagger_post(LoginRequestSerializer)
+        def post(self, request, *args, **kwargs):
+            return super().post(request, *args, **kwargs)
+
+
+try:
+    from django.contrib.auth import get_user_model
+
+    UserViewSet.queryset = get_user_model().objects.all()
+    UserViewSet = extend_schema_view(
+        list=extend_schema(operation_id="users_users_list"),
+        retrieve=extend_schema(
+            operation_id="users_users_retrieve_detail",
+            parameters=[
+                OpenApiParameter(
+                    name="id",
+                    type=OpenApiTypes.INT,
+                    location=OpenApiParameter.PATH,
+                )
+            ],
+        ),
+    )(UserViewSet)
+except NameError:
+    pass
