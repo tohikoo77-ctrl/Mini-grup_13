@@ -13,8 +13,12 @@ router.register(r'users', UserViewSet, basename='user')
 
 from apps.user.views import LoginAPIView, SendVerificationCodeAPIView, VerifyEmailCodeAPIView
 
+from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
+
 urlpatterns = [
     path("auth/login/", LoginAPIView.as_view(), name="user-login"),
+    path("auth/token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
+    path("auth/token/verify/", TokenVerifyView.as_view(), name="token-verify"),
     path(
         "verification/send-code/",
         SendVerificationCodeAPIView.as_view(),
@@ -32,6 +36,7 @@ urlpatterns = [
     path('auth/reset-password/', ResetPasswordView.as_view(), name='reset-password'),
 ]
 from django.urls import path
+from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 
 from apps.user.views import (
     SendVerificationCodeAPIView,

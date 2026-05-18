@@ -6,12 +6,13 @@ from .models import Product
 from .serializer import ProductSerializer
 
 class ProductViewSet(viewsets.ModelViewSet):
+   
 	queryset = Product.objects.all()
 	serializer_class = ProductSerializer
 	filter_backends = [filters.SearchFilter, filters.OrderingFilter]
 	search_fields = ['name', 'description', 'category__name']
 	ordering_fields = ['price', 'created_at', 'updated_at']
-
+  
 	
 	@extend_schema(request=ProductSerializer, responses={200: ProductSerializer})
 	def update(self, request, *args, **kwargs):
