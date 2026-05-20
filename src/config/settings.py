@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from datetime import timedelta
 import os
@@ -243,3 +244,59 @@ CACHES = {
 }
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# Real email delivery. Set these environment variables on PythonAnywhere:
+# EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, and optionally DEFAULT_FROM_EMAIL.
+import os
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True").lower() == "true"
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
+
+# Transactional email: one configured sender account can send verification
+# codes to any registered user's email address. Put the real credentials in
+# PythonAnywhere environment variables, not in source code.
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True").lower() == "true"
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL") or EMAIL_HOST_USER
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
+# Final email configuration.
+# - Local/dev without SMTP credentials: print emails in the console and avoid
+#   ValueError from an empty sender address.
+# - Production with credentials: send real emails to any registered user.
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True").lower() == "true"
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+DEFAULT_FROM_EMAIL = (
+    os.environ.get("DEFAULT_FROM_EMAIL")
+    or EMAIL_HOST_USER
+    or "webmaster@localhost"
+)
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
+if EMAIL_HOST_USER and EMAIL_HOST_PASSWORD:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# Swagger request bodies for custom auth actions whose serializers are not
+# visible to drf-spectacular.
+_spectacular_settings = globals().get("SPECTACULAR_SETTINGS", {})
+SPECTACULAR_SETTINGS = {
+    **_spectacular_settings,
+    "POSTPROCESSING_HOOKS": [
+        *(_spectacular_settings.get("POSTPROCESSING_HOOKS") or []),
+        "config.swagger_hooks.add_verify_resend_request_bodies",
+    ],
+}
