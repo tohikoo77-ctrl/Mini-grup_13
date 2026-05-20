@@ -216,3 +216,30 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SAMESITE = "None"
     SESSION_COOKIE_SAMESITE = "None"
+
+# PythonAnywhere does not provide a local Redis/SMTP service for this app by
+# default. Admin login writes the session during POST, so cache-backed sessions
+# can raise ConnectionRefusedError when they point at localhost.
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "mini-grup-13-cache",
+    }
+}
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# Final production overrides for PythonAnywhere. Keep these at the end so they
+# take precedence over any local development cache/session/email settings above.
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "mini-grup-13-cache",
+    }
+}
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
