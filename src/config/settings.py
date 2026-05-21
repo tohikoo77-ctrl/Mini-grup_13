@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'apps.user',
     'apps.category',
     'apps.cart',
-
+    'apps.commerce_extras',
     # other apps
     'rest_framework',
     'corsheaders',
