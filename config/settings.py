@@ -23,6 +23,7 @@ SECRET_KEY = env(
 DEBUG = env.bool("DEBUG", default=False)
 
 #allowed hosts
+
 ALLOWED_HOSTS = env.list(
     "ALLOWED_HOSTS",
     default=[
@@ -31,6 +32,9 @@ ALLOWED_HOSTS = env.list(
         "deployminigroup13.pythonanywhere.com",
     ],
 )
+
+ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(",")
+
 
 
 # Application definition
@@ -53,6 +57,7 @@ INSTALLED_APPS = [
     'commerce_extras',
     # other apps
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
     'drf_spectacular',
 ]
@@ -213,6 +218,7 @@ if DEBUG:
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
@@ -236,6 +242,11 @@ if "drf_spectacular" in INSTALLED_APPS:
     }
 
 AUTH_USER_MODEL = "user.User"
+
+AUTHENTICATION_BACKENDS = [
+    "user.backends.EmailOrUsernameBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
 
 
 
@@ -328,6 +339,6 @@ SPECTACULAR_SETTINGS = {
     **_spectacular_settings,
     "POSTPROCESSING_HOOKS": [
         *(_spectacular_settings.get("POSTPROCESSING_HOOKS") or []),
-        "config.swagger_hooks.add_verify_resend_request_bodies",
+        "config.swagger_hooks.add_write_method_request_bodies",
     ],
 }

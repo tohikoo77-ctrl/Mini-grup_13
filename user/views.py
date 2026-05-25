@@ -7,15 +7,14 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+
 logger = logging.getLogger(__name__)
 User = get_user_model()
 
 
-def get_user_serializer():
-    try:
-        from .serializer import UserSerializer
-    except Exception as exc:
-        logger.exception("Could not import user.serializer.UserSerializer: %s", exc)
+def user_field_names():
+    names = []
+    for field_name in ("id", "username", "email", "first_name", "last_name"):
         try:
             from .serializer import UserSerializer
         except Exception as exc:
@@ -29,20 +28,67 @@ class DefaultUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = tuple(
-            field_name
-            for field_name in ("id", "username", "email", "first_name", "last_name")
-            if any(field.name == field_name for field in User._meta.get_fields())
-        ) + ("password",)
+        fields = user_field_names() + ("password",)
         read_only_fields = ("id",)
 
     def create(self, validated_data):
         password = validated_data.pop("password", None)
+
+        if hasattr(User.objects, "create_user"):
+            return User.objects.create_user(password=password, **validated_data)
+
         user = User(**validated_data)
         if password:
             user.set_password(password)
         user.save()
         return user
+
+
+def get_user_serializer():
+    try:
+        from .serializer import UserSerializer
+
+        return UserSerializer
+    except Exception as exc:
+        logger.exception("Could not import user.serializer.UserSerializer: %s", exc)
+
+    try:
+        from .serializers import UserSerializer
+
+        return UserSerializer
+    except Exception as exc:
+        logger.exception("Could not import user.serializers.UserSerializer: %s", exc)
+
+    return DefaultUserSerializer
+
+
+def serialize_user(user):
+    UserSerializer = get_user_serializer()
+
+    try:
+        return UserSerializer(user).data
+    except Exception as exc:
+        logger.exception("Could not serialize user with project serializer: %s", exc)
+        return DefaultUserSerializer(user).data
+
+
+def build_token_response(user):
+    data = {"user": serialize_user(user)}
+
+    try:
+        from rest_framework_simplejwt.tokens import RefreshToken
+    except ImportError:
+        return data
+
+        except Exception as exc:
+            logger.exception("Login API unexpected error: %s", exc)
+            return Response(
+                {
+                    "detail": "Login failed because of an internal server error.",
+                    "error": str(exc),
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
 
 class LoginView(APIView):
@@ -73,21 +119,8 @@ class LoginView(APIView):
 
             user = authenticate(request, username=login_value, password=password)
 
-            has_email_field = any(
-                field.name == "email" for field in User._meta.get_fields()
-            )
-            if user is None and has_email_field and "@" in str(login_value):
-                try:
-                    user_obj = User.objects.get(email__iexact=login_value)
-                except User.DoesNotExist:
-                    user_obj = None
-
-                if user_obj is not None:
-                    user = authenticate(
-                        request,
-                        username=getattr(user_obj, User.USERNAME_FIELD),
-                        password=password,
-                    )
+            if user is None and "@" in str(login_value):
+                user = self.authenticate_by_email(request, login_value, password)
 
             if user is None:
                 return Response(
@@ -101,24 +134,7 @@ class LoginView(APIView):
                     status=status.HTTP_403_FORBIDDEN,
                 )
 
-            UserSerializer = get_user_serializer()
-            try:
-                user_data = UserSerializer(user).data
-            except Exception as exc:
-                logger.exception("Could not serialize login user response: %s", exc)
-                user_data = DefaultUserSerializer(user).data
-            data = {"user": user_data}
-
-            try:
-                from rest_framework_simplejwt.tokens import RefreshToken
-            except ImportError:
-                pass
-            else:
-                refresh = RefreshToken.for_user(user)
-                data["refresh"] = str(refresh)
-                data["access"] = str(refresh.access_token)
-
-            return Response(data, status=status.HTTP_200_OK)
+            return Response(build_token_response(user), status=status.HTTP_200_OK)
 
         except Exception as exc:
             logger.exception("Login API unexpected error: %s", exc)
@@ -129,6 +145,20 @@ class LoginView(APIView):
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
+    def authenticate_by_email(self, request, email, password):
+        try:
+            User._meta.get_field("email")
+        except Exception:
+            return None
+
+        try:
+            user_obj = User.objects.get(email__iexact=email)
+        except User.DoesNotExist:
+            return None
+
+        username = getattr(user_obj, User.USERNAME_FIELD)
+        return authenticate(request, username=username, password=password)
 
 
 class RegisterView(APIView):
@@ -142,7 +172,7 @@ class RegisterView(APIView):
         try:
             serializer.is_valid(raise_exception=True)
             user = serializer.save()
-            return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+            return Response(serialize_user(user), status=status.HTTP_201_CREATED)
         except ValidationError as exc:
             return Response(exc.detail, status=status.HTTP_400_BAD_REQUEST)
         except IntegrityError as exc:
@@ -175,8 +205,7 @@ class MeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        UserSerializer = get_user_serializer()
-        return Response(UserSerializer(request.user).data, status=status.HTTP_200_OK)
+        return Response(serialize_user(request.user), status=status.HTTP_200_OK)
 
 
 class ChangePasswordView(APIView):
@@ -191,6 +220,7 @@ class ChangePasswordView(APIView):
                 {"new_password": ["This field is required."]},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
         if old_password and not request.user.check_password(old_password):
             return Response(
                 {"old_password": ["Old password is incorrect."]},
@@ -207,12 +237,17 @@ class ChangeUsernameView(APIView):
 
     def post(self, request, *args, **kwargs):
         username = request.data.get("username")
+
         if not username:
             return Response(
                 {"username": ["This field is required."]},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        if User.objects.exclude(pk=request.user.pk).filter(username=username).exists():
+
+        username_exists = (
+            User.objects.exclude(pk=request.user.pk).filter(username=username).exists()
+        )
+        if username_exists:
             return Response(
                 {"username": ["A user with that username already exists."]},
                 status=status.HTTP_400_BAD_REQUEST,
