@@ -11,6 +11,7 @@ from rest_framework.views import APIView
 logger = logging.getLogger(__name__)
 User = get_user_model()
 
+
 try:
     from drf_spectacular.utils import OpenApiResponse, extend_schema
 except ImportError:
@@ -31,11 +32,11 @@ def user_field_names():
     names = []
     for field_name in ("id", "username", "email", "first_name", "last_name"):
         try:
-            from .serializer import UserSerializer
-        except Exception as exc:
-            logger.exception("Could not import user.serializers.UserSerializer: %s", exc)
-            return DefaultUserSerializer
-    return UserSerializer
+            User._meta.get_field(field_name)
+        except Exception:
+            continue
+        names.append(field_name)
+    return tuple(names)
 
 
 class DefaultUserSerializer(serializers.ModelSerializer):
@@ -66,7 +67,7 @@ class LoginRequestSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
 
-class TokenLoginResponseSerializer(serializers.Serializer):
+class LoginResponseSerializer(serializers.Serializer):
     user = serializers.DictField()
     refresh = serializers.CharField(required=False)
     access = serializers.CharField(required=False)
@@ -95,7 +96,7 @@ def get_user_serializer():
         logger.exception("Could not import user.serializer.UserSerializer: %s", exc)
 
     try:
-        from .serializer import UserSerializer
+        from .serializers import UserSerializer
 
         return UserSerializer
     except Exception as exc:
@@ -122,15 +123,10 @@ def build_token_response(user):
     except ImportError:
         return data
 
-    except Exception as exc:
-            logger.exception("Login API unexpected error: %s", exc)
-            return Response(
-                {
-                    "detail": "Login failed because of an internal server error.",
-                    "error": str(exc),
-                },
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
+    refresh = RefreshToken.for_user(user)
+    data["refresh"] = str(refresh)
+    data["access"] = str(refresh.access_token)
+    return data
 
 
 class LoginView(APIView):
@@ -140,10 +136,10 @@ class LoginView(APIView):
     @extend_schema(
         tags=["User"],
         summary="User login",
-        description="Login with username, email, or phone and receive user data plus JWT tokens when SimpleJWT is installed.",
+        description="Login with username, email or phone. Returns user data and JWT tokens when SimpleJWT is installed.",
         request=LoginRequestSerializer,
         responses={
-            200: TokenLoginResponseSerializer,
+            200: LoginResponseSerializer,
             400: OpenApiResponse(description="Invalid credentials or missing fields."),
             500: OpenApiResponse(description="Unexpected login error."),
         },
@@ -309,7 +305,10 @@ class ChangePasswordView(APIView):
 
         request.user.set_password(new_password)
         request.user.save(update_fields=["password"])
-        return Response({"detail": "Password changed successfully."})
+        return Response(
+            {"detail": "Password changed successfully."},
+            status=status.HTTP_200_OK,
+        )
 
 
 class ChangeUsernameView(APIView):
@@ -342,6 +341,7 @@ class ChangeUsernameView(APIView):
                 {"username": ["A user with that username already exists."]},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
         request.user.username = username
         request.user.save(update_fields=["username"])
         return Response({"username": request.user.username}, status=status.HTTP_200_OK)
