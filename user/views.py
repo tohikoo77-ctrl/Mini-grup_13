@@ -11,6 +11,21 @@ from rest_framework.views import APIView
 logger = logging.getLogger(__name__)
 User = get_user_model()
 
+try:
+    from drf_spectacular.utils import OpenApiResponse, extend_schema
+except ImportError:
+
+    def extend_schema(*args, **kwargs):
+        def decorator(func):
+            return func
+
+        return decorator
+
+    class OpenApiResponse:
+        def __init__(self, response=None, description=None):
+            self.response = response
+            self.description = description
+
 
 def user_field_names():
     names = []
@@ -44,6 +59,33 @@ class DefaultUserSerializer(serializers.ModelSerializer):
         return user
 
 
+class LoginRequestSerializer(serializers.Serializer):
+    username = serializers.CharField(required=False)
+    email = serializers.EmailField(required=False)
+    phone = serializers.CharField(required=False)
+    password = serializers.CharField(write_only=True)
+
+
+class TokenLoginResponseSerializer(serializers.Serializer):
+    user = serializers.DictField()
+    refresh = serializers.CharField(required=False)
+    access = serializers.CharField(required=False)
+
+
+class RegisterRequestSerializer(DefaultUserSerializer):
+    pass
+
+
+class ChangePasswordRequestSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=False, write_only=True)
+    new_password = serializers.CharField(required=False, write_only=True)
+    password = serializers.CharField(required=False, write_only=True)
+
+
+class ChangeUsernameRequestSerializer(serializers.Serializer):
+    username = serializers.CharField()
+
+
 def get_user_serializer():
     try:
         from .serializer import UserSerializer
@@ -53,7 +95,7 @@ def get_user_serializer():
         logger.exception("Could not import user.serializer.UserSerializer: %s", exc)
 
     try:
-        from .serializers import UserSerializer
+        from .serializer import UserSerializer
 
         return UserSerializer
     except Exception as exc:
@@ -95,6 +137,17 @@ class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
 
+    @extend_schema(
+        tags=["User"],
+        summary="User login",
+        description="Login with username, email, or phone and receive user data plus JWT tokens when SimpleJWT is installed.",
+        request=LoginRequestSerializer,
+        responses={
+            200: TokenLoginResponseSerializer,
+            400: OpenApiResponse(description="Invalid credentials or missing fields."),
+            500: OpenApiResponse(description="Unexpected login error."),
+        },
+    )
     def post(self, request, *args, **kwargs):
         try:
             login_value = (
@@ -165,6 +218,17 @@ class RegisterView(APIView):
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
 
+    @extend_schema(
+        tags=["User"],
+        summary="User register",
+        description="Create a new user account.",
+        request=RegisterRequestSerializer,
+        responses={
+            201: DefaultUserSerializer,
+            400: OpenApiResponse(description="Validation error."),
+            500: OpenApiResponse(description="Unexpected register error."),
+        },
+    )
     def post(self, request, *args, **kwargs):
         UserSerializer = get_user_serializer()
         serializer = UserSerializer(data=request.data)
@@ -204,6 +268,12 @@ class RegisterView(APIView):
 class MeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
+    @extend_schema(
+        tags=["User"],
+        summary="Current user",
+        description="Return authenticated user profile.",
+        responses={200: DefaultUserSerializer},
+    )
     def get(self, request, *args, **kwargs):
         return Response(serialize_user(request.user), status=status.HTTP_200_OK)
 
@@ -211,6 +281,16 @@ class MeView(APIView):
 class ChangePasswordView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
+    @extend_schema(
+        tags=["User"],
+        summary="Change password",
+        description="Change password for authenticated user.",
+        request=ChangePasswordRequestSerializer,
+        responses={
+            200: OpenApiResponse(description="Password changed successfully."),
+            400: OpenApiResponse(description="Validation error."),
+        },
+    )
     def post(self, request, *args, **kwargs):
         old_password = request.data.get("old_password")
         new_password = request.data.get("new_password") or request.data.get("password")
@@ -235,6 +315,16 @@ class ChangePasswordView(APIView):
 class ChangeUsernameView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
+    @extend_schema(
+        tags=["User"],
+        summary="Change username",
+        description="Change username for authenticated user.",
+        request=ChangeUsernameRequestSerializer,
+        responses={
+            200: ChangeUsernameRequestSerializer,
+            400: OpenApiResponse(description="Validation error."),
+        },
+    )
     def post(self, request, *args, **kwargs):
         username = request.data.get("username")
 
@@ -256,6 +346,16 @@ class ChangeUsernameView(APIView):
         request.user.save(update_fields=["username"])
         return Response({"username": request.user.username}, status=status.HTTP_200_OK)
 
+    @extend_schema(
+        tags=["User"],
+        summary="Change username",
+        description="Change username for authenticated user.",
+        request=ChangeUsernameRequestSerializer,
+        responses={
+            200: ChangeUsernameRequestSerializer,
+            400: OpenApiResponse(description="Validation error."),
+        },
+    )
     def patch(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
