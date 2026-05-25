@@ -106,7 +106,12 @@ class LoginView(APIView):
 class LogoutView(APIView):
         authentication_classes = [TokenAuthentication]
         def post(self, request):
-                request.user.auth_token.delete()
+        if not request.user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=401)
+
+        auth_token = getattr(request.user, "auth_token", None)
+        if auth_token is not None:
+            auth_token.delete()
                 UserService.logout(request)
                 return Response({"message": "Logged out successfully."})
 
