@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from .models import Order, OrderItem
 from .serializers import OrderSerializer, OrderItemSerializer
-from apps.product.models import Product
+from product.models import Product
 
 
 class OrderViewSet(viewsets.ModelViewSet):

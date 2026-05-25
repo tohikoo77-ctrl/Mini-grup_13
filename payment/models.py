@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
-from apps.order.models import Order
+from order.models import Order
 # Create your models here.
 
 class Payment(models.Model):

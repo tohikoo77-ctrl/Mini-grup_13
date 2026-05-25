@@ -43,7 +43,7 @@ class ResetPasswordSerializer(serializers.Serializer):
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from apps.user.models import EmailVerificationCode, send_user_verification_code
+from user.models import EmailVerificationCode, send_user_verification_code
 
 
 class SendVerificationCodeSerializer(serializers.Serializer):
