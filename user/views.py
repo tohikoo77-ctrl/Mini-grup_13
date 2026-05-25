@@ -16,11 +16,11 @@ def user_field_names():
     names = []
     for field_name in ("id", "username", "email", "first_name", "last_name"):
         try:
-            User._meta.get_field(field_name)
-        except Exception:
-            continue
-        names.append(field_name)
-    return tuple(names)
+            from .serializer import UserSerializer
+        except Exception as exc:
+            logger.exception("Could not import user.serializers.UserSerializer: %s", exc)
+            return DefaultUserSerializer
+    return UserSerializer
 
 
 class DefaultUserSerializer(serializers.ModelSerializer):
@@ -80,10 +80,15 @@ def build_token_response(user):
     except ImportError:
         return data
 
-    refresh = RefreshToken.for_user(user)
-    data["refresh"] = str(refresh)
-    data["access"] = str(refresh.access_token)
-    return data
+        except Exception as exc:
+            logger.exception("Login API unexpected error: %s", exc)
+            return Response(
+                {
+                    "detail": "Login failed because of an internal server error.",
+                    "error": str(exc),
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
 
 class LoginView(APIView):
@@ -224,10 +229,7 @@ class ChangePasswordView(APIView):
 
         request.user.set_password(new_password)
         request.user.save(update_fields=["password"])
-        return Response(
-            {"detail": "Password changed successfully."},
-            status=status.HTTP_200_OK,
-        )
+        return Response({"detail": "Password changed successfully."})
 
 
 class ChangeUsernameView(APIView):
@@ -250,7 +252,6 @@ class ChangeUsernameView(APIView):
                 {"username": ["A user with that username already exists."]},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
         request.user.username = username
         request.user.save(update_fields=["username"])
         return Response({"username": request.user.username}, status=status.HTTP_200_OK)
