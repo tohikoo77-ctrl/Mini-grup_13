@@ -23,7 +23,7 @@ SECRET_KEY = env(
 DEBUG = env.bool("DEBUG", default=False)
 
 #allowed hosts
-<<<<<<< HEAD
+
 ALLOWED_HOSTS = env.list(
     "ALLOWED_HOSTS",
     default=[
@@ -32,20 +32,9 @@ ALLOWED_HOSTS = env.list(
         "deployminigroup13.pythonanywhere.com",
     ],
 )
-=======
-<<<<<<< muhammadayub
+
 ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(",")
-=======
-ALLOWED_HOSTS = env.list(
-    "ALLOWED_HOSTS",
-    default=[
-        "localhost",
-        "127.0.0.1",
-        "deployminigroup13.pythonanywhere.com",
-    ],
-)
->>>>>>> local
->>>>>>> 5938c2a (fix)
+
 
 
 # Application definition
@@ -229,116 +218,7 @@ if DEBUG:
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
-<<<<<<< muhammadayub
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-REST_FRAMEWORK = {
-    **globals().get("REST_FRAMEWORK", {}),
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.AllowAny",
-    ],
-}
-
-if "drf_spectacular" in INSTALLED_APPS:
-    REST_FRAMEWORK = {
-        **REST_FRAMEWORK,
-        "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    }
-
-<<<<<<< HEAD
-    SPECTACULAR_SETTINGS = {
-        "TITLE": "Mini Group 13 API",
-        "DESCRIPTION": "API documentation",
-        "VERSION": "1.0.0",
-        "SERVE_INCLUDE_SCHEMA": False,
-    }
-=======
-    for apps_dir, prefix in app_roots:
-        if not apps_dir.exists():
-            continue
-
-        for app_dir in sorted(apps_dir.iterdir()):
-            if not app_dir.is_dir() or app_dir.name.startswith("_"):
-                continue
-            if app_dir.name in ignored_names:
-                continue
-            if not (app_dir / "__init__.py").exists():
-                continue
-            if not (app_dir / "models.py").exists() and not (app_dir / "apps.py").exists():
-                continue
-
-            module_name = f"{prefix}.{app_dir.name}" if prefix else app_dir.name
-            if _installed_app_exists(module_name):
-                discovered.append(module_name)
-
-    return discovered
-
-
-def _optional_third_party_apps():
-    candidates = [
-        "rest_framework",
-        "rest_framework_simplejwt",
-        "django_filters",
-        "corsheaders",
-        "drf_spectacular",
-    ]
-    return [app for app in candidates if _installed_app_exists(app)]
-
-
-def _app_label(app_name):
-    if app_name.endswith("Config") and ".apps." in app_name:
-        app_name = app_name.split(".apps.", 1)[0]
-    return app_name.rsplit(".", 1)[-1]
-
-
-def _normalize_installed_app(app_name):
-    if app_name.startswith("apps.") and app_name.endswith("Config") and ".apps." in app_name:
-        return app_name.split(".apps.", 1)[0]
-    return app_name
-
-
-_clean_installed_apps = []
-_seen_app_labels = set()
-for _app in (
-    [app for app in INSTALLED_APPS if _installed_app_exists(app)]
-    + _optional_third_party_apps()
-    + _local_apps()
-):
-    _app = _normalize_installed_app(_app)
-    _label = _app_label(_app)
-    if _label in _seen_app_labels:
-        continue
-    _seen_app_labels.add(_label)
-    _clean_installed_apps.append(_app)
-
-INSTALLED_APPS = _clean_installed_apps
-
-
-def _dotted_path_exists(dotted_path):
-    module_name = dotted_path.rsplit(".", 1)[0]
-    try:
-        return _importlib_util.find_spec(module_name) is not None
-    except (ImportError, ModuleNotFoundError, ValueError):
-        return False
-
-
-MIDDLEWARE = [middleware for middleware in MIDDLEWARE if _dotted_path_exists(middleware)]
-if _installed_app_exists("corsheaders"):
-    _cors_middleware = "corsheaders.middleware.CorsMiddleware"
-    if _cors_middleware not in MIDDLEWARE:
-        try:
-            _common_index = MIDDLEWARE.index("django.middleware.common.CommonMiddleware")
-        except ValueError:
-            MIDDLEWARE.insert(0, _cors_middleware)
-        else:
-            MIDDLEWARE.insert(_common_index, _cors_middleware)
-
-if "AUTH_USER_MODEL" in globals():
-    _auth_app_label = AUTH_USER_MODEL.split(".", 1)[0]
-    _installed_app_labels = {_app_label(app) for app in INSTALLED_APPS}
-    if _auth_app_label not in _installed_app_labels:
-        AUTH_USER_MODEL = "auth.User"
-=======
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
@@ -360,8 +240,6 @@ if "drf_spectacular" in INSTALLED_APPS:
         "VERSION": "1.0.0",
         "SERVE_INCLUDE_SCHEMA": False,
     }
->>>>>>> local
->>>>>>> 5938c2a (fix)
 
 AUTH_USER_MODEL = "user.User"
 
