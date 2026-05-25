@@ -122,7 +122,7 @@ def build_token_response(user):
     except ImportError:
         return data
 
-        except Exception as exc:
+    except Exception as exc:
             logger.exception("Login API unexpected error: %s", exc)
             return Response(
                 {
