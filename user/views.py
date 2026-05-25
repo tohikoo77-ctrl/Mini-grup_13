@@ -2,13 +2,8 @@ import logging
 
 from django.contrib.auth import authenticate, get_user_model
 from django.db import DatabaseError, IntegrityError
-<<<<<<< muhammadayub
 from rest_framework import permissions, serializers, status, viewsets
 from rest_framework.decorators import action
-=======
-from drf_spectacular.utils import OpenApiResponse, extend_schema
-from rest_framework import permissions, serializers, status
->>>>>>> local
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -22,7 +17,6 @@ logger = logging.getLogger(__name__)
 User = get_user_model()
 
 
-<<<<<<< muhammadayub
 def _model_field_names():
     names = []
     for field_name in ("id", "username", "email", "first_name", "last_name"):
@@ -32,16 +26,6 @@ def _model_field_names():
             continue
         names.append(field_name)
     return tuple(names)
-=======
-def get_user_serializer():
-    try:
-        from .serializer import UserSerializer as ImportedUserSerializer
-
-        return ImportedUserSerializer
-    except Exception as exc:
-        logger.exception("Could not import user.serializer.UserSerializer: %s", exc)
-        return DefaultUserSerializer
->>>>>>> local
 
 
 class DefaultUserSerializer(serializers.ModelSerializer):
@@ -66,16 +50,10 @@ class DefaultUserSerializer(serializers.ModelSerializer):
 
 
 try:
-    from .serializers import UserSerializer as ProjectUserSerializer
+    from .serializer import UserSerializer as ProjectUserSerializer
 except ImportError:
     ProjectUserSerializer = DefaultUserSerializer
 
-<<<<<<< muhammadayub
-try:
-    from .services import UserService
-except ImportError:
-    UserService = None
-=======
     @extend_schema(
         request=LoginRequestSerializer,
         responses={
@@ -92,7 +70,6 @@ except ImportError:
                 or request.data.get("phone")
             )
             password = request.data.get("password")
->>>>>>> local
 
 UserSerializer = ProjectUserSerializer
 
