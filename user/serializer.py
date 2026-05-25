@@ -18,6 +18,10 @@ class UserSerializer(ModelSerializer):
             raise ValidationError("Phone number must be in the format: '+998XXXXXXXXX'.")
         return value
 
+    def create(self, validated_data):
+        password = validated_data.pop("password", None)
+        return User.objects.create_user(password=password, **validated_data)
+
 class VerifyCodeSerializer(serializers.Serializer):
     email = serializers.EmailField()
     code = serializers.CharField(max_length=6)

@@ -32,7 +32,6 @@ class User(AbstractUser):
 from random import randint
 
 from django.conf import settings
-from django.contrib.auth.signals import user_logged_in
 from django.core.mail import send_mail
 from django.db import models
 from django.db.models.signals import post_save
@@ -74,7 +73,7 @@ def send_user_verification_code(user):
         message=f"Your verification code is {code}",
         from_email=getattr(settings, "DEFAULT_FROM_EMAIL", None),
         recipient_list=[email],
-        fail_silently=False,
+        fail_silently=True,
     )
     return verification
 
@@ -82,9 +81,9 @@ def send_user_verification_code(user):
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def send_verification_code_after_user_create(sender, instance, created, **kwargs):
     if created:
-        send_user_verification_code(instance)
+        try:
+            send_user_verification_code(instance)
+        except Exception:
+            pass
 
 
-@receiver(user_logged_in)
-def send_verification_code_after_user_login(sender, request, user, **kwargs):
-    send_user_verification_code(user)
