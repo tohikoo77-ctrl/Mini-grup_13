@@ -23,7 +23,14 @@ SECRET_KEY = env(
 DEBUG = env.bool("DEBUG", default=False)
 
 #allowed hosts
-ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = env.list(
+    "ALLOWED_HOSTS",
+    default=[
+        "localhost",
+        "127.0.0.1",
+        "deployminigroup13.pythonanywhere.com",
+    ],
+)
 
 
 # Application definition
@@ -207,6 +214,13 @@ if DEBUG:
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    **globals().get("REST_FRAMEWORK", {}),
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
+    ],
+}
 
 AUTH_USER_MODEL = "user.User"
 

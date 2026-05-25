@@ -8,6 +8,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 
 try:
     from drf_yasg import openapi
@@ -348,7 +349,7 @@ class NewsViewSet(NewsWritePermissionMixin, viewsets.ModelViewSet):
 )
 class WishlistViewSet(viewsets.ModelViewSet):
     serializer_class = WishlistItemSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
     def get_queryset(self):
         return WishlistItem.objects.filter(user=self.request.user).select_related("product")
