@@ -222,6 +222,19 @@ REST_FRAMEWORK = {
     ],
 }
 
+if "drf_spectacular" in INSTALLED_APPS:
+    REST_FRAMEWORK = {
+        **REST_FRAMEWORK,
+        "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    }
+
+    SPECTACULAR_SETTINGS = {
+        "TITLE": "Mini Group 13 API",
+        "DESCRIPTION": "API documentation",
+        "VERSION": "1.0.0",
+        "SERVE_INCLUDE_SCHEMA": False,
+    }
+
 AUTH_USER_MODEL = "user.User"
 
 
