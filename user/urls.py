@@ -11,7 +11,7 @@ from .views import (
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename='user')
 
-from apps.user.views import LoginAPIView, SendVerificationCodeAPIView, VerifyEmailCodeAPIView
+from user.views import LoginAPIView, SendVerificationCodeAPIView, VerifyEmailCodeAPIView
 
 from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 
@@ -38,7 +38,7 @@ urlpatterns = [
 from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 
-from apps.user.views import (
+from user.views import (
     SendVerificationCodeAPIView,
     VerifyEmailCodeAPIView,
 )

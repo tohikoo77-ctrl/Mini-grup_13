@@ -7,7 +7,7 @@ env = environ.Env()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
@@ -37,13 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
    # my apps
-    'apps.product',
-    'apps.order',
-    'apps.payment',
-    'apps.user',
-    'apps.category',
-    'apps.cart',
-    'apps.commerce_extras',
+    'product',
+    'order',
+    'payment',
+    'user',
+    'category',
+    'cart',
+    'commerce_extras',
     # other apps
     'rest_framework',
     'corsheaders',
