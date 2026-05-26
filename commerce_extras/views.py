@@ -5,10 +5,9 @@ from django.utils.decorators import method_decorator
 from django.utils import timezone
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
 
 try:
     from drf_yasg import openapi
@@ -22,18 +21,14 @@ except Exception:
 
         return decorator
 
-from .models import News, OrderAddress, OrderReview, ProductComparison, WishlistItem
+from .models import News, OrderAddress, OrderReview, ProductComparison
 from .serializers import (
-    ChangePasswordSerializer,
-    ChangeUsernameSerializer,
     NewsSerializer,
     OrderAddressSerializer,
     OrderReviewSerializer,
     ProductCompareRequestSerializer,
     ProductComparisonSerializer,
     UserProfileSerializer,
-    WishlistToggleSerializer,
-    WishlistItemSerializer,
     get_order_model,
     get_product_model,
     serialize_order,
@@ -188,203 +183,6 @@ HOME_RESPONSE = (
         }
     )
 )
-PASSWORD_RESPONSE = (
-    None
-    if openapi is None
-    else _schema({"detail": openapi.Schema(type=openapi.TYPE_STRING)})
-)
-USERNAME_RESPONSE = (
-    None
-    if openapi is None
-    else _schema(
-        {
-            "detail": openapi.Schema(type=openapi.TYPE_STRING),
-            "username": openapi.Schema(type=openapi.TYPE_STRING),
-        }
-    )
-)
-WISHLIST_TOGGLE_RESPONSE = (
-    None
-    if openapi is None
-    else _schema(
-        {
-            "in_wishlist": openapi.Schema(type=openapi.TYPE_BOOLEAN),
-            "item": openapi.Schema(type=openapi.TYPE_OBJECT, additional_properties=True),
-        }
-    )
-)
-
-
-class NewsWritePermissionMixin:
-    def get_permissions(self):
-        if self.action in ("list", "retrieve"):
-            return [AllowAny()]
-        return [IsAdminUser()]
-
-
-@method_decorator(
-    name="list",
-    decorator=swagger_auto_schema(
-        tags=["News"],
-        operation_summary="List published news",
-        operation_description="Returns published news for public users. Staff users can see all news.",
-        responses={200: NewsSerializer(many=True)},
-    ),
-)
-@method_decorator(
-    name="retrieve",
-    decorator=swagger_auto_schema(
-        tags=["News"],
-        operation_summary="Get news detail",
-        operation_description="Returns one news item by slug.",
-        responses={200: NewsSerializer},
-    ),
-)
-@method_decorator(
-    name="create",
-    decorator=swagger_auto_schema(
-        tags=["News"],
-        operation_summary="Create news",
-        operation_description="Admin-only endpoint for creating a news item.",
-        request_body=NewsSerializer,
-        responses={201: NewsSerializer},
-    ),
-)
-@method_decorator(
-    name="update",
-    decorator=swagger_auto_schema(
-        tags=["News"],
-        operation_summary="Replace news",
-        operation_description="Admin-only endpoint for replacing a news item.",
-        request_body=NewsSerializer,
-        responses={200: NewsSerializer},
-    ),
-)
-@method_decorator(
-    name="partial_update",
-    decorator=swagger_auto_schema(
-        tags=["News"],
-        operation_summary="Update news",
-        operation_description="Admin-only endpoint for partially updating a news item.",
-        request_body=NewsSerializer,
-        responses={200: NewsSerializer},
-    ),
-)
-@method_decorator(
-    name="destroy",
-    decorator=swagger_auto_schema(
-        tags=["News"],
-        operation_summary="Delete news",
-        operation_description="Admin-only endpoint for deleting a news item.",
-        responses={204: "No content"},
-    ),
-)
-class NewsViewSet(NewsWritePermissionMixin, viewsets.ModelViewSet):
-    serializer_class = NewsSerializer
-    lookup_field = "slug"
-
-    def get_queryset(self):
-        queryset = News.objects.all()
-        if not self.request.user.is_staff:
-            queryset = queryset.filter(is_published=True, published_at__lte=timezone.now())
-        return queryset
-
-
-@method_decorator(
-    name="list",
-    decorator=swagger_auto_schema(
-        tags=["Wishlist"],
-        operation_summary="List wishlist",
-        operation_description="Returns products saved in the current user's wishlist.",
-        responses={200: WishlistItemSerializer(many=True)},
-    ),
-)
-@method_decorator(
-    name="retrieve",
-    decorator=swagger_auto_schema(
-        tags=["Wishlist"],
-        operation_summary="Get wishlist item",
-        operation_description="Returns one wishlist item owned by the current user.",
-        responses={200: WishlistItemSerializer},
-    ),
-)
-@method_decorator(
-    name="create",
-    decorator=swagger_auto_schema(
-        tags=["Wishlist"],
-        operation_summary="Add product to wishlist",
-        operation_description="Adds a product to the current user's wishlist.",
-        request_body=WishlistItemSerializer,
-        responses={201: WishlistItemSerializer},
-    ),
-)
-@method_decorator(
-    name="update",
-    decorator=swagger_auto_schema(
-        tags=["Wishlist"],
-        operation_summary="Replace wishlist item",
-        operation_description="Replaces the product stored in one wishlist item owned by the current user.",
-        request_body=WishlistItemSerializer,
-        responses={200: WishlistItemSerializer},
-    ),
-)
-@method_decorator(
-    name="partial_update",
-    decorator=swagger_auto_schema(
-        tags=["Wishlist"],
-        operation_summary="Update wishlist item",
-        operation_description="Partially updates one wishlist item owned by the current user.",
-        request_body=WishlistItemSerializer,
-        responses={200: WishlistItemSerializer},
-    ),
-)
-@method_decorator(
-    name="destroy",
-    decorator=swagger_auto_schema(
-        tags=["Wishlist"],
-        operation_summary="Remove wishlist item",
-        operation_description="Removes a product from the current user's wishlist.",
-        responses={204: "No content"},
-    ),
-)
-class WishlistViewSet(viewsets.ModelViewSet):
-    serializer_class = WishlistItemSerializer
-    permission_classes = (AllowAny,)
-
-    def get_queryset(self):
-        return WishlistItem.objects.filter(user=self.request.user).select_related("product")
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-    @swagger_auto_schema(
-        tags=["Wishlist"],
-        operation_summary="Toggle wishlist product",
-        operation_description="Adds the product if it is not saved; removes it if it already exists.",
-        request_body=WishlistToggleSerializer,
-        responses={200: WISHLIST_TOGGLE_RESPONSE, 201: WISHLIST_TOGGLE_RESPONSE},
-    )
-    @action(detail=False, methods=("post",))
-    def toggle(self, request):
-        input_serializer = WishlistToggleSerializer(data=request.data)
-        input_serializer.is_valid(raise_exception=True)
-        product_id = input_serializer.validated_data["product_id"]
-
-        product_model = get_product_model()
-        try:
-            product = product_model.objects.get(pk=product_id)
-        except product_model.DoesNotExist:
-            return Response({"product_id": ["Product not found."]}, status=status.HTTP_404_NOT_FOUND)
-
-        item, created = WishlistItem.objects.get_or_create(user=request.user, product=product)
-        if not created:
-            item.delete()
-            return Response({"in_wishlist": False}, status=status.HTTP_200_OK)
-
-        serializer = self.get_serializer(item)
-        return Response({"in_wishlist": True, "item": serializer.data}, status=status.HTTP_201_CREATED)
-
-
 @method_decorator(
     name="list",
     decorator=swagger_auto_schema(
@@ -1023,36 +821,3 @@ class UserProfileView(APIView):
         serializer.save()
         return Response(serializer.data)
 
-
-class ChangePasswordView(APIView):
-    permission_classes = (IsAuthenticated,)
-
-    @swagger_auto_schema(
-        tags=["Account"],
-        operation_summary="Update current user password",
-        operation_description="Changes the authenticated user's password after checking the old password.",
-        request_body=ChangePasswordSerializer,
-        responses={200: PASSWORD_RESPONSE},
-    )
-    def post(self, request):
-        serializer = ChangePasswordSerializer(data=request.data, context={"request": request})
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({"detail": "Password updated successfully."})
-
-
-class ChangeUsernameView(APIView):
-    permission_classes = (IsAuthenticated,)
-
-    @swagger_auto_schema(
-        tags=["Account"],
-        operation_summary="Update current user username",
-        operation_description="Changes the authenticated user's username.",
-        request_body=ChangeUsernameSerializer,
-        responses={200: USERNAME_RESPONSE},
-    )
-    def post(self, request):
-        serializer = ChangeUsernameSerializer(data=request.data, context={"request": request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        return Response({"detail": "Username updated successfully.", "username": user.username})

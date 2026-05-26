@@ -13,6 +13,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
 
     @extend_schema(
+        tags=["Orders"],
         request=OrderSerializer,
         responses={
             201: OrderSerializer,
@@ -27,6 +28,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
     @extend_schema(
+        tags=["Orders"],
         request=OrderItemSerializer,
         responses={
             201: OrderItemSerializer,
@@ -94,6 +96,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
+        tags=["Orders"],
         responses={
             200: OpenApiResponse(description="Item removed successfully."),
             403: OpenApiResponse(description="Permission denied."),
@@ -137,6 +140,7 @@ class OrderItemViewSet(viewsets.ModelViewSet):
     serializer_class = OrderItemSerializer
 
     @extend_schema(
+        tags=["Orders"],
         request=OrderItemSerializer,
         responses={
             201: OrderItemSerializer,
@@ -147,6 +151,7 @@ class OrderItemViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Orders"],
         request=OrderItemSerializer,
         responses={
             200: OrderItemSerializer,
@@ -157,6 +162,7 @@ class OrderItemViewSet(viewsets.ModelViewSet):
         return super().update(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Orders"],
         request=OrderItemSerializer,
         responses={
             200: OrderItemSerializer,
@@ -167,6 +173,7 @@ class OrderItemViewSet(viewsets.ModelViewSet):
         return super().partial_update(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Orders"],
         responses={
             204: OpenApiResponse(description="Order item deleted."),
         },

@@ -13,6 +13,7 @@ class CartViewSet(viewsets.ViewSet):
     """
 
     @extend_schema(
+        tags=["Cart"],
         request=CartSerializer,
         responses={
             201: CartSerializer,
@@ -26,19 +27,22 @@ class CartViewSet(viewsets.ViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @extend_schema(responses=CartSerializer(many=True))
+    @extend_schema(
+        tags=["Cart"],responses=CartSerializer(many=True))
     def list(self, request):
         queryset = Cart.objects.all()
         serializer = CartSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    @extend_schema(responses=CartSerializer)
+    @extend_schema(
+        tags=["Cart"],responses=CartSerializer)
     def retrieve(self, request, pk=None):
         cart = get_object_or_404(Cart, pk=pk)
         serializer = CartSerializer(cart)
         return Response(serializer.data)
 
     @extend_schema(
+        tags=["Cart"],
         request=CartSerializer,
         responses={
             200: CartSerializer,
@@ -54,6 +58,7 @@ class CartViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
+        tags=["Cart"],
         request=CartSerializer,
         responses={
             200: CartSerializer,
@@ -69,6 +74,7 @@ class CartViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
+        tags=["Cart"],
         responses={
             204: OpenApiResponse(description="Cart deleted."),
         }
@@ -85,6 +91,7 @@ class CartItemViewSet(viewsets.ViewSet):
     """
 
     @extend_schema(
+        tags=["Cart"],
         request=CartItemSerializer,
         responses={
             201: CartItemSerializer,
@@ -98,19 +105,22 @@ class CartItemViewSet(viewsets.ViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @extend_schema(responses=CartItemSerializer(many=True))
+    @extend_schema(
+        tags=["Cart"],responses=CartItemSerializer(many=True))
     def list(self, request):
         queryset = CartItem.objects.all()
         serializer = CartItemSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    @extend_schema(responses=CartItemSerializer)
+    @extend_schema(
+        tags=["Cart"],responses=CartItemSerializer)
     def retrieve(self, request, pk=None):
         item = get_object_or_404(CartItem, pk=pk)
         serializer = CartItemSerializer(item)
         return Response(serializer.data)
 
     @extend_schema(
+        tags=["Cart"],
         request=CartItemSerializer,
         responses={
             200: CartItemSerializer,
@@ -126,6 +136,7 @@ class CartItemViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
+        tags=["Cart"],
         request=CartItemSerializer,
         responses={
             200: CartItemSerializer,
@@ -142,6 +153,7 @@ class CartItemViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
+        tags=["Cart"],
         responses={
             204: OpenApiResponse(description="Cart item deleted."),
         }

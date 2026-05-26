@@ -14,6 +14,7 @@ class CategoryViewSet(viewsets.ViewSet):
     """
 
     @extend_schema(
+        tags=["Category"],
         responses=CategorySerializer(many=True)
     )
     def list(self, request):
@@ -22,6 +23,7 @@ class CategoryViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     @extend_schema(
+        tags=["Category"],
         request=CategorySerializer,
         responses={
             201: CategorySerializer,
@@ -36,6 +38,7 @@ class CategoryViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
+        tags=["Category"],
         responses={
             200: CategorySerializer,
             404: OpenApiResponse(description="Category not found."),
@@ -47,6 +50,7 @@ class CategoryViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     @extend_schema(
+        tags=["Category"],
         request=CategorySerializer,
         responses={
             200: CategorySerializer,
@@ -63,6 +67,7 @@ class CategoryViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
+        tags=["Category"],
         request=CategorySerializer,
         responses={
             200: CategorySerializer,
@@ -83,6 +88,7 @@ class CategoryViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
+        tags=["Category"],
         responses={
             204: OpenApiResponse(description="Category deleted successfully."),
             404: OpenApiResponse(description="Category not found."),

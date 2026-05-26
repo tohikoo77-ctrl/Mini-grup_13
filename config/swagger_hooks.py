@@ -101,16 +101,6 @@ _PATH_BODY_RULES = (
         },
         {"old_password": "oldpass", "new_password": "newpass"},
     )),
-    ("password", _json_body(
-        {
-            "type": "object",
-            "properties": {
-                "old_password": {"type": "string", "format": "password"},
-                "new_password": {"type": "string", "format": "password"},
-            },
-            "required": ["new_password"],
-        },
-    )),
     ("username", _json_body(
         {
             "type": "object",
