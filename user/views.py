@@ -87,6 +87,25 @@ class ChangeUsernameRequestSerializer(serializers.Serializer):
     username = serializers.CharField()
 
 
+class ForgotPasswordRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+
+class VerifyCodeRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    code = serializers.CharField(max_length=6)
+
+
+class ResendCodeRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+
+class ResetPasswordRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    code = serializers.CharField(max_length=6)
+    new_password = serializers.CharField(write_only=True, min_length=6)
+
+
 def get_user_serializer():
     try:
         from .serializer import UserSerializer
@@ -346,18 +365,125 @@ class ChangeUsernameView(APIView):
         request.user.save(update_fields=["username"])
         return Response({"username": request.user.username}, status=status.HTTP_200_OK)
 
+
+class ForgotPasswordView(APIView):
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = []
+
     @extend_schema(
         tags=["User"],
-        summary="Change username",
-        description="Change username for authenticated user.",
-        request=ChangeUsernameRequestSerializer,
+        summary="Forgot password",
+        description="Send a password reset verification code to the user's email.",
+        request=ForgotPasswordRequestSerializer,
         responses={
-            200: ChangeUsernameRequestSerializer,
+            200: OpenApiResponse(description="Reset code sent."),
             400: OpenApiResponse(description="Validation error."),
         },
     )
-    def patch(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
+    def post(self, request, *args, **kwargs):
+        from .services import UserService
+
+        serializer = ForgotPasswordRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            UserService.send_password_reset_code(serializer.validated_data["email"])
+        except ValidationError as exc:
+            return Response(exc.detail, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"detail": "If the email exists, a reset code was sent."},
+            status=status.HTTP_200_OK,
+        )
+
+
+class VerifyCodeView(APIView):
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = []
+
+    @extend_schema(
+        tags=["User"],
+        summary="Verify email code",
+        description="Verify registration code and activate the user account.",
+        request=VerifyCodeRequestSerializer,
+        responses={
+            200: DefaultUserSerializer,
+            400: OpenApiResponse(description="Validation error."),
+        },
+    )
+    def post(self, request, *args, **kwargs):
+        from .services import UserService
+
+        serializer = VerifyCodeRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            user = UserService.verify_user_code(
+                serializer.validated_data["email"],
+                serializer.validated_data["code"],
+            )
+        except ValidationError as exc:
+            return Response(exc.detail, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serialize_user(user), status=status.HTTP_200_OK)
+
+
+class ResendCodeView(APIView):
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = []
+
+    @extend_schema(
+        tags=["User"],
+        summary="Resend verification code",
+        description="Resend registration verification code for an inactive user.",
+        request=ResendCodeRequestSerializer,
+        responses={
+            200: OpenApiResponse(description="Verification code resent."),
+            400: OpenApiResponse(description="Validation error."),
+        },
+    )
+    def post(self, request, *args, **kwargs):
+        from .services import UserService
+
+        serializer = ResendCodeRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            UserService.resend_verification_code(serializer.validated_data["email"])
+        except ValidationError as exc:
+            return Response(exc.detail, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"detail": "Verification code resent."},
+            status=status.HTTP_200_OK,
+        )
+
+
+class ResetPasswordView(APIView):
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = []
+
+    @extend_schema(
+        tags=["User"],
+        summary="Reset password",
+        description="Reset password using email, verification code, and new password.",
+        request=ResetPasswordRequestSerializer,
+        responses={
+            200: OpenApiResponse(description="Password reset successfully."),
+            400: OpenApiResponse(description="Validation error."),
+        },
+    )
+    def post(self, request, *args, **kwargs):
+        from .services import UserService
+
+        serializer = ResetPasswordRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            UserService.reset_password(
+                serializer.validated_data["email"],
+                serializer.validated_data["code"],
+                serializer.validated_data["new_password"],
+            )
+        except ValidationError as exc:
+            return Response(exc.detail, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"detail": "Password reset successfully."},
+            status=status.HTTP_200_OK,
+        )
 
 
 LoginAPIView = LoginView

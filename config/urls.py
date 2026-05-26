@@ -10,10 +10,14 @@ from django.urls import include, path
 def api_root(request):
     return JsonResponse(
         {
-            "swagger": "/api/swagger/",
+            "docs": "/api/docs/",
             "schema": "/api/schema/",
             "users": "/api/users/",
             "products": "/api/products/",
+            "categories": "/api/categories/",
+            "carts": "/api/carts/",
+            "orders": "/api/orders/",
+            "wishlist": "/api/wishlist/",
             "payments": "/api/payments/",
             "commerce_extras": "/api/commerce-extras/",
         }
@@ -40,24 +44,19 @@ urlpatterns = [
 ]
 
 
-# User endpoints. These are explicit so Swagger always sees login/register/me.
 add_include(urlpatterns, "api/users/", "user.urls")
-add_include(urlpatterns, "api/user/", "user.urls")
-add_include(urlpatterns, "api/", "user.urls")
-
-# Other project apps.
 add_include(urlpatterns, "api/products/", "product.urls")
-add_include(urlpatterns, "api/product/", "product.urls")
+add_include(urlpatterns, "api/categories/", "category.urls")
+add_include(urlpatterns, "api/carts/", "cart.urls")
+add_include(urlpatterns, "api/orders/", "order.urls")
+add_include(urlpatterns, "api/wishlist/", "commerce_extras.wishlist_urls")
 add_include(urlpatterns, "api/payments/", "payment.urls")
-add_include(urlpatterns, "api/payment/", "payment.urls")
 add_include(urlpatterns, "api/commerce-extras/", "commerce_extras.urls")
-add_include(urlpatterns, "api/commerce_extras/", "commerce_extras.urls")
 
 
 try:
     from drf_spectacular.views import (
         SpectacularAPIView,
-        SpectacularRedocView,
         SpectacularSwaggerView,
     )
 except ImportError:
@@ -80,10 +79,7 @@ except ImportError:
 
         urlpatterns += [
             path("api/schema/", swagger_not_installed, name="schema"),
-            path("api/swagger/", swagger_not_installed, name="swagger-ui"),
             path("api/docs/", swagger_not_installed, name="docs"),
-            path("swagger/", swagger_not_installed, name="swagger"),
-            path("docs/", swagger_not_installed, name="docs-short"),
         ]
     else:
         schema_view = get_schema_view(
@@ -102,53 +98,18 @@ except ImportError:
                 name="schema",
             ),
             path(
-                "api/swagger/",
-                schema_view.with_ui("swagger", cache_timeout=0),
-                name="swagger-ui",
-            ),
-            path(
                 "api/docs/",
                 schema_view.with_ui("swagger", cache_timeout=0),
                 name="docs",
-            ),
-            path(
-                "swagger/",
-                schema_view.with_ui("swagger", cache_timeout=0),
-                name="swagger",
-            ),
-            path(
-                "docs/",
-                schema_view.with_ui("swagger", cache_timeout=0),
-                name="docs-short",
             ),
         ]
 else:
     urlpatterns += [
         path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
         path(
-            "api/swagger/",
-            SpectacularSwaggerView.as_view(url_name="schema"),
-            name="swagger-ui",
-        ),
-        path(
             "api/docs/",
             SpectacularSwaggerView.as_view(url_name="schema"),
             name="docs",
-        ),
-        path(
-            "api/redoc/",
-            SpectacularRedocView.as_view(url_name="schema"),
-            name="redoc",
-        ),
-        path(
-            "swagger/",
-            SpectacularSwaggerView.as_view(url_name="schema"),
-            name="swagger",
-        ),
-        path(
-            "docs/",
-            SpectacularSwaggerView.as_view(url_name="schema"),
-            name="docs-short",
         ),
     ]
 

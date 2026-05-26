@@ -30,10 +30,7 @@ Swagger/OpenAPI endpoints:
 
 ```text
 /api/schema/
-/api/swagger/
 /api/docs/
-/swagger/
-/docs/
 ```
 
 In Postman you can also import directly from:
