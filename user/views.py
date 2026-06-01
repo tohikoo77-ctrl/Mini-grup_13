@@ -250,8 +250,20 @@ class RegisterView(APIView):
 
         try:
             serializer.is_valid(raise_exception=True)
-            user = serializer.save()
-            return Response(serialize_user(user), status=status.HTTP_201_CREATED)
+            from .services import UserService
+
+            user = UserService.create_user(dict(serializer.validated_data))
+            return Response(
+                {
+                    **serialize_user(user),
+                    "is_active": user.is_active,
+                    "detail": (
+                        "User created. Verify your email with POST /api/users/verify/ "
+                        "before logging in."
+                    ),
+                },
+                status=status.HTTP_201_CREATED,
+            )
         except ValidationError as exc:
             return Response(exc.detail, status=status.HTTP_400_BAD_REQUEST)
         except IntegrityError as exc:

@@ -176,7 +176,7 @@ HOME_RESPONSE = (
             "latest_news": _array_schema(
                 openapi.Schema(
                     type=openapi.TYPE_OBJECT,
-                    description="Latest published news items.",
+                    description="Published news items from the last 24 hours.",
                     additional_properties=True,
                 )
             ),
@@ -720,7 +720,10 @@ class HomeView(APIView):
     @swagger_auto_schema(
         tags=["Home"],
         operation_summary="Home page data",
-        operation_description="Returns popular products and latest published news for the home page.",
+        operation_description=(
+            "Returns popular products and daily news (published within the last 24 hours) "
+            "for the home page."
+        ),
         manual_parameters=HOME_PARAMS,
         responses={200: HOME_RESPONSE},
     )
@@ -752,7 +755,7 @@ class HomeView(APIView):
         limit = _positive_int(request.query_params.get("limit"), 12, 50)
         products = [serialize_product(product, request) for product in queryset[:limit]]
         news = NewsSerializer(
-            News.objects.filter(is_published=True, published_at__lte=timezone.now())[:6],
+            News.objects.daily()[:6],
             many=True,
             context={"request": request},
         ).data

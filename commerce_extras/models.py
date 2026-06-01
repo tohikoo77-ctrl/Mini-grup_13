@@ -1,8 +1,23 @@
+from datetime import timedelta
+
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
+
+
+class NewsQuerySet(models.QuerySet):
+    def published(self):
+        return self.filter(is_published=True, published_at__lte=timezone.now())
+
+    def daily(self):
+        cutoff = timezone.now() - timedelta(hours=24)
+        return self.published().filter(published_at__gte=cutoff)
+
+
+class NewsManager(models.Manager.from_queryset(NewsQuerySet)):
+    pass
 
 
 class WishlistItem(models.Model):
@@ -41,6 +56,8 @@ class News(models.Model):
     published_at = models.DateTimeField(default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = NewsManager()
 
     class Meta:
         ordering = ("-published_at", "-created_at")
