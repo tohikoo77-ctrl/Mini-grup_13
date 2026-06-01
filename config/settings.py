@@ -23,7 +23,6 @@ SECRET_KEY = env(
 DEBUG = env.bool("DEBUG", default=False)
 
 #allowed hosts
-
 ALLOWED_HOSTS = env.list(
     "ALLOWED_HOSTS",
     default=[
@@ -32,9 +31,6 @@ ALLOWED_HOSTS = env.list(
         "deployminigroup13.pythonanywhere.com",
     ],
 )
-
-ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(",")
-
 
 
 # Application definition
@@ -64,6 +60,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -218,38 +215,7 @@ if DEBUG:
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-import importlib.util as _swagger_importlib_util
-
-if _swagger_importlib_util.find_spec("drf_spectacular") is not None:
-    if "drf_spectacular" not in INSTALLED_APPS:
-        INSTALLED_APPS.append("drf_spectacular")
-
-    REST_FRAMEWORK = {
-        **globals().get("REST_FRAMEWORK", {}),
-        "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-        "DEFAULT_PERMISSION_CLASSES": globals()
-        .get("REST_FRAMEWORK", {})
-        .get(
-            "DEFAULT_PERMISSION_CLASSES",
-            ["rest_framework.permissions.AllowAny"],
-        ),
-    }
-
-    SPECTACULAR_SETTINGS = {
-        "TITLE": "Mini Group 13 API",
-        "DESCRIPTION": "User, product, payment and commerce extras API documentation.",
-        "VERSION": "1.0.0",
-        "SERVE_INCLUDE_SCHEMA": False,
-        "TAGS": [
-            {"name": "User", "description": "Login, register and profile endpoints"},
-            {"name": "Product", "description": "Product endpoints"},
-            {"name": "Payment", "description": "Payment endpoints"},
-            {"name": "Commerce Extras", "description": "Extra commerce endpoints"},
-        ],
-    }
 
 REST_FRAMEWORK = {
     **globals().get("REST_FRAMEWORK", {}),
@@ -272,11 +238,6 @@ if "drf_spectacular" in INSTALLED_APPS:
     }
 
 AUTH_USER_MODEL = "user.User"
-
-AUTHENTICATION_BACKENDS = [
-    "user.backends.EmailOrUsernameBackend",
-    "django.contrib.auth.backends.ModelBackend",
-]
 
 
 
