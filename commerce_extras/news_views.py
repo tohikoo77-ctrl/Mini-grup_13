@@ -1,6 +1,6 @@
-from django.utils import timezone
 from drf_spectacular.utils import OpenApiResponse, extend_schema
 from rest_framework import mixins, status, viewsets
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
@@ -26,18 +26,38 @@ class NewsViewSet(
     def get_queryset(self):
         queryset = News.objects.all()
         if not self.request.user.is_staff:
-            queryset = queryset.filter(is_published=True, published_at__lte=timezone.now())
+            queryset = queryset.daily()
         return queryset
 
     @extend_schema(
         tags=["News"],
         summary="List published news",
-        description="Returns published news for public users. Staff users can see all news.",
+        description=(
+            "Returns published news from the last 24 hours for public users. "
+            "Staff users can see all news."
+        ),
         responses={200: NewsSerializer(many=True)},
         auth=[],
     )
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
+
+    @extend_schema(
+        tags=["News"],
+        summary="List daily news",
+        description="Returns published news items published within the last 24 hours.",
+        responses={200: NewsSerializer(many=True)},
+        auth=[],
+    )
+    @action(detail=False, methods=["get"], url_path="daily")
+    def daily(self, request):
+        queryset = self.filter_queryset(News.objects.daily())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     @extend_schema(
         tags=["News"],
