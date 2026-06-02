@@ -9,6 +9,8 @@ class Product(models.Model):
     old_price = models.CharField(max_length=255, blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='products/')
+    specifications = models.JSONField(default=dict, blank=True)
+    advantages = models.JSONField(default=list, blank=True)
     is_hit = models.BooleanField(default=False)
     is_new = models.BooleanField()
     is_sale = models.BooleanField()
