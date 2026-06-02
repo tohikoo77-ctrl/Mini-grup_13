@@ -816,7 +816,7 @@ class UserOrdersView(APIView):
         tags=["Account"],
         summary="Current user orders",
         description="Returns orders that belong to the authenticated user.",
-        responses={200: OpenApiResponse(response=OpenApiTypes.ARRAY if OpenApiTypes else None)},
+    responses={200: OpenApiResponse(response=OpenApiTypes.OBJECT if OpenApiTypes else None)},
     )
     @swagger_auto_schema(
         tags=["Account"],
@@ -844,7 +844,22 @@ class UserOrdersView(APIView):
         else:
             queryset = queryset.order_by("-id")
 
-        return Response([serialize_order(order, request) for order in queryset])
+            return Response([serialize_order(order, request) for order in queryset])
+
+
+def _remove_post_from_news_and_discount_views():
+    for view in list(globals().values()):
+        if not isinstance(view, type) or not issubclass(view, APIView):
+            continue
+
+        view_name = view.__name__.lower()
+        if "news" in view_name or "discount" in view_name:
+            view.http_method_names = [
+                method for method in view.http_method_names if method != "post"
+            ]
+
+
+_remove_post_from_news_and_discount_views()
 
 
 class UserProfileView(APIView):
@@ -889,4 +904,3 @@ class UserProfileView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-
