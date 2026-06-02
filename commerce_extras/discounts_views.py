@@ -9,6 +9,7 @@ from .serializers import DiscountSerializer
 
 
 class DiscountViewSet(
+    mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
@@ -28,6 +29,20 @@ class DiscountViewSet(
         if not self.request.user.is_staff:
             queryset = queryset.active()
         return queryset.prefetch_related("products")
+
+    @extend_schema(
+        tags=["Discounts"],
+        summary="Create discount",
+        description="Admin-only endpoint for creating a discount item.",
+        request=DiscountSerializer,
+        responses={
+            201: DiscountSerializer,
+            400: OpenApiResponse(description="Validation error."),
+            403: OpenApiResponse(description="Admin access required."),
+        },
+    )
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
 
     @extend_schema(
         tags=["Discounts"],
