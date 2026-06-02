@@ -37,8 +37,9 @@ except Exception:
 
         return decorator
 
-from .models import News, OrderAddress, OrderReview, ProductComparison
+from .models import Discount, News, OrderAddress, OrderReview, ProductComparison
 from .serializers import (
+    DiscountSerializer,
     NewsSerializer,
     OrderAddressSerializer,
     OrderReviewSerializer,
@@ -800,7 +801,12 @@ class HomeView(APIView):
             many=True,
             context={"request": request},
         ).data
-        return Response({"popular_products": products, "latest_news": news})
+        discounts = DiscountSerializer(
+            Discount.objects.active()[:12],
+            many=True,
+            context={"request": request},
+        ).data
+        return Response({"popular_products": products, "latest_news": news, "discounts": discounts})
 
 
 class UserOrdersView(APIView):

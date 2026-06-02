@@ -20,6 +20,21 @@ class NewsManager(models.Manager.from_queryset(NewsQuerySet)):
     pass
 
 
+class DiscountQuerySet(models.QuerySet):
+    def published(self):
+        return self.filter(is_published=True)
+
+    def active(self):
+        now = timezone.now()
+        return self.published().filter(starts_at__lte=now).filter(
+            models.Q(ends_at__isnull=True) | models.Q(ends_at__gte=now)
+        )
+
+
+class DiscountManager(models.Manager.from_queryset(DiscountQuerySet)):
+    pass
+
+
 class WishlistItem(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -69,6 +84,48 @@ class News(models.Model):
             slug = base_slug
             index = 2
             while News.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{index}"
+                index += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
+
+class Discount(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=280, unique=True, blank=True)
+    summary = models.TextField(blank=True)
+    content = models.TextField(blank=True)
+    image = models.FileField(upload_to="discounts/", blank=True, null=True)
+    discount_percent = models.PositiveSmallIntegerField(
+        default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
+    products = models.ManyToManyField(
+        "product.Product",
+        related_name="discounts",
+        blank=True,
+    )
+    is_published = models.BooleanField(default=True)
+    starts_at = models.DateTimeField(default=timezone.now)
+    ends_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    objects = DiscountManager()
+
+    class Meta:
+        ordering = ("-starts_at", "-created_at")
+        verbose_name_plural = "discounts"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.title)[:240] or "discount"
+            slug = base_slug
+            index = 2
+            while Discount.objects.filter(slug=slug).exclude(pk=self.pk).exists():
                 slug = f"{base_slug}-{index}"
                 index += 1
             self.slug = slug

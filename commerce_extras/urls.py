@@ -2,6 +2,7 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 
 from .news_views import NewsViewSet
+from .discounts_views import DiscountViewSet
 from .views import (
     HomeView,
     OrderAddressViewSet,
@@ -15,6 +16,7 @@ from .views import (
 
 router = DefaultRouter()
 router.register("news", NewsViewSet, basename="news")
+router.register("discounts", DiscountViewSet, basename="discounts")
 router.register("order-addresses", OrderAddressViewSet, basename="order-addresses")
 router.register("order-reviews", OrderReviewViewSet, basename="order-reviews")
 router.register("product-comparisons", ProductComparisonViewSet, basename="product-comparisons")

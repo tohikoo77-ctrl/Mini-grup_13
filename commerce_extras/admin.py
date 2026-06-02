@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import News, OrderAddress, OrderReview, ProductComparison, WishlistItem
+from .models import Discount, News, OrderAddress, OrderReview, ProductComparison, WishlistItem
 
 
 @admin.register(WishlistItem)
@@ -15,6 +15,15 @@ class NewsAdmin(admin.ModelAdmin):
     list_filter = ("is_published", "published_at", "created_at")
     search_fields = ("title", "summary", "content")
     prepopulated_fields = {"slug": ("title",)}
+
+
+@admin.register(Discount)
+class DiscountAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "discount_percent", "is_published", "starts_at", "ends_at", "created_at")
+    list_filter = ("is_published", "starts_at", "ends_at", "created_at")
+    search_fields = ("title", "summary", "content")
+    prepopulated_fields = {"slug": ("title",)}
+    filter_horizontal = ("products",)
 
 
 @admin.register(OrderAddress)
