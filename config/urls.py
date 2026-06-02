@@ -20,6 +20,8 @@ def api_root(request):
             "wishlist": "/api/wishlist/",
             "payments": "/api/payments/",
             "commerce_extras": "/api/commerce-extras/",
+            "news": "/api/commerce-extras/news/",
+            "discounts": "/api/commerce-extras/discounts/",
         }
     )
 
