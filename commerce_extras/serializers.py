@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
-from .models import News, OrderAddress, OrderReview, ProductComparison, WishlistItem
+from .models import Discount, News, OrderAddress, OrderReview, ProductComparison, WishlistItem
 
 
 def get_product_model():
@@ -119,6 +119,34 @@ class NewsSerializer(serializers.ModelSerializer):
             "updated_at",
         )
         read_only_fields = ("id", "slug", "created_at", "updated_at")
+
+
+class DiscountSerializer(serializers.ModelSerializer):
+    products_detail = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Discount
+        fields = (
+            "id",
+            "title",
+            "slug",
+            "summary",
+            "content",
+            "image",
+            "discount_percent",
+            "products",
+            "products_detail",
+            "is_published",
+            "starts_at",
+            "ends_at",
+            "created_at",
+            "updated_at",
+        )
+        read_only_fields = ("id", "slug", "products_detail", "created_at", "updated_at")
+
+    def get_products_detail(self, obj):
+        request = self.context.get("request")
+        return [serialize_product(product, request) for product in obj.products.all()]
 
 
 class OrderAddressSerializer(serializers.ModelSerializer):
