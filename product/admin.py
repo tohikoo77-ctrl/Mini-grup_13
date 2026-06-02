@@ -10,6 +10,7 @@ class ProductAdmin(admin.ModelAdmin):
         'category',
         'price',
         'old_price',
+        'discount_percent',
         'stock',
         'is_hit',
         'is_new',
