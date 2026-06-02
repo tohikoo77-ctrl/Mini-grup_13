@@ -10,6 +10,22 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 try:
+    from drf_spectacular.types import OpenApiTypes
+    from drf_spectacular.utils import OpenApiResponse, extend_schema
+except Exception:
+    OpenApiTypes = None
+
+    def extend_schema(*args, **kwargs):
+        def decorator(func):
+            return func
+
+        return decorator
+
+    class OpenApiResponse:  # type: ignore
+        def __init__(self, *args, **kwargs):
+            pass
+
+try:
     from drf_yasg import openapi
     from drf_yasg.utils import swagger_auto_schema
 except Exception:
@@ -518,6 +534,15 @@ class ProductDiscoveryView(APIView):
             return queryset.order_by(f"{direction}{field}")
         return queryset
 
+    @extend_schema(
+        tags=["Product List"],
+        summary="Filter products",
+        description=(
+            "Product listing endpoint with search, category, brand, color, size, price, stock, "
+            "discount, new-product, popularity, ordering, and pagination filters."
+        ),
+        responses={200: OpenApiResponse(response=OpenApiTypes.OBJECT if OpenApiTypes else None)},
+    )
     @swagger_auto_schema(
         tags=["Product List"],
         operation_summary="Filter products",
@@ -682,6 +707,13 @@ def _product_compare_row(product):
 class ProductCompareView(APIView):
     permission_classes = (AllowAny,)
 
+    @extend_schema(
+        tags=["Product Compare"],
+        summary="Compare products",
+        description="Compares 2 to 6 products and returns product data plus common comparable fields.",
+        request=ProductCompareRequestSerializer,
+        responses={200: OpenApiResponse(response=OpenApiTypes.OBJECT if OpenApiTypes else None)},
+    )
     @swagger_auto_schema(
         tags=["Product Compare"],
         operation_summary="Compare products",
@@ -717,6 +749,15 @@ class ProductCompareView(APIView):
 class HomeView(APIView):
     permission_classes = (AllowAny,)
 
+    @extend_schema(
+        tags=["Home"],
+        summary="Home page data",
+        description=(
+            "Returns popular products and daily news (published within the last 24 hours) "
+            "for the home page."
+        ),
+        responses={200: OpenApiResponse(response=OpenApiTypes.OBJECT if OpenApiTypes else None)},
+    )
     @swagger_auto_schema(
         tags=["Home"],
         operation_summary="Home page data",
@@ -765,6 +806,12 @@ class HomeView(APIView):
 class UserOrdersView(APIView):
     permission_classes = (IsAuthenticated,)
 
+    @extend_schema(
+        tags=["Account"],
+        summary="Current user orders",
+        description="Returns orders that belong to the authenticated user.",
+        responses={200: OpenApiResponse(response=OpenApiTypes.ARRAY if OpenApiTypes else None)},
+    )
     @swagger_auto_schema(
         tags=["Account"],
         operation_summary="Current user orders",
@@ -797,6 +844,12 @@ class UserOrdersView(APIView):
 class UserProfileView(APIView):
     permission_classes = (IsAuthenticated,)
 
+    @extend_schema(
+        tags=["Account"],
+        summary="Current user profile",
+        description="Returns the authenticated user's profile.",
+        responses={200: UserProfileSerializer},
+    )
     @swagger_auto_schema(
         tags=["Account"],
         operation_summary="Current user profile",
@@ -806,6 +859,13 @@ class UserProfileView(APIView):
     def get(self, request):
         return Response(UserProfileSerializer(request.user, context={"request": request}).data)
 
+    @extend_schema(
+        tags=["Account"],
+        summary="Update current user profile",
+        description="Partially updates editable fields on the authenticated user's profile.",
+        request=UserProfileSerializer,
+        responses={200: UserProfileSerializer},
+    )
     @swagger_auto_schema(
         tags=["Account"],
         operation_summary="Update current user profile",
