@@ -7,6 +7,7 @@ class Product(models.Model):
     description = models.TextField(max_length=500)
     price = models.CharField(max_length=255)
     old_price = models.CharField(max_length=255, blank=True, null=True)
+    discount_percent = models.PositiveSmallIntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='products/')
     specifications = models.JSONField(default=dict, blank=True)
