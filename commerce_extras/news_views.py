@@ -9,6 +9,7 @@ from .serializers import NewsSerializer
 
 
 class NewsViewSet(
+    mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
@@ -28,6 +29,20 @@ class NewsViewSet(
         if not self.request.user.is_staff:
             queryset = queryset.daily()
         return queryset
+
+    @extend_schema(
+        tags=["News"],
+        summary="Create news",
+        description="Admin-only endpoint for creating a news item.",
+        request=NewsSerializer,
+        responses={
+            201: NewsSerializer,
+            400: OpenApiResponse(description="Validation error."),
+            403: OpenApiResponse(description="Admin access required."),
+        },
+    )
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
 
     @extend_schema(
         tags=["News"],
