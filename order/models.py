@@ -66,3 +66,53 @@ def set_order_item_price(sender, instance, **kwargs):
     total_price = max(subtotal - discount, Decimal("0"))
 
     instance.price = unit_price
+
+
+class ReturnRequest(models.Model):
+    """Return request for orders"""
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+        ('in_progress', 'In Progress'),
+        ('completed', 'Completed'),
+    ]
+
+    REASON_CHOICES = [
+        ('defective', 'Defective Product'),
+        ('damaged', 'Damaged in Shipping'),
+        ('wrong_item', 'Wrong Item Received'),
+        ('not_as_described', 'Not as Described'),
+        ('changed_mind', 'Changed Mind'),
+        ('other', 'Other'),
+    ]
+
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='return_requests')
+    order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE, related_name='return_requests')
+    reason = models.CharField(max_length=50, choices=REASON_CHOICES)
+    description = models.TextField(help_text="Detailed explanation of the return")
+    
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    admin_notes = models.TextField(blank=True, help_text="Notes from admin")
+    
+    return_shipping_cost = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True,
+        help_text="Cost for return shipping, if customer needs to pay"
+    )
+    refund_amount = models.DecimalField(
+        max_digits=12, decimal_places=2, null=True, blank=True,
+        help_text="Amount to be refunded"
+    )
+    
+    requested_at = models.DateTimeField(auto_now_add=True)
+    approved_at = models.DateTimeField(null=True, blank=True)
+    received_at = models.DateTimeField(null=True, blank=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-requested_at']
+        verbose_name_plural = "Return Requests"
+
+    def __str__(self):
+        return f"Return for Order {self.order_id} - {self.status}"
