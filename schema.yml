@@ -1,0 +1,5671 @@
+openapi: 3.0.3
+info:
+  title: Mini Group 13 API
+  version: 1.0.0
+  description: API documentation
+paths:
+  /api/carts/:
+    get:
+      operationId: carts_list
+      description: A ViewSet that manually implements CRUD actions for Cart.
+      tags:
+      - Cart
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+          description: ''
+    post:
+      operationId: carts_create
+      description: A ViewSet that manually implements CRUD actions for Cart.
+      tags:
+      - Cart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Cart'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Cart'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+          description: ''
+        '400':
+          description: Validation error.
+  /api/carts/{id}/:
+    get:
+      operationId: carts_retrieve
+      description: A ViewSet that manually implements CRUD actions for Cart.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Cart
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+          description: ''
+    put:
+      operationId: carts_update
+      description: A ViewSet that manually implements CRUD actions for Cart.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Cart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Cart'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Cart'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+          description: ''
+        '400':
+          description: Validation error.
+    patch:
+      operationId: carts_partial_update
+      description: A ViewSet that manually implements CRUD actions for Cart.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Cart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCart'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCart'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCart'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+          description: ''
+        '400':
+          description: Validation error.
+    delete:
+      operationId: carts_destroy
+      description: A ViewSet that manually implements CRUD actions for Cart.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Cart
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: Cart deleted.
+  /api/carts/items/:
+    get:
+      operationId: carts_items_list
+      description: A ViewSet that manually implements CRUD actions for CartItem.
+      tags:
+      - Cart
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CartItem'
+          description: ''
+    post:
+      operationId: carts_items_create
+      description: A ViewSet that manually implements CRUD actions for CartItem.
+      tags:
+      - Cart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CartItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CartItem'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartItem'
+          description: ''
+        '400':
+          description: Validation error.
+  /api/carts/items/{id}/:
+    get:
+      operationId: carts_items_retrieve
+      description: A ViewSet that manually implements CRUD actions for CartItem.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Cart
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartItem'
+          description: ''
+    put:
+      operationId: carts_items_update
+      description: A ViewSet that manually implements CRUD actions for CartItem.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Cart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CartItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CartItem'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartItem'
+          description: ''
+        '400':
+          description: Validation error.
+    patch:
+      operationId: carts_items_partial_update
+      description: A ViewSet that manually implements CRUD actions for CartItem.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Cart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCartItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCartItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCartItem'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartItem'
+          description: ''
+        '400':
+          description: Validation error.
+    delete:
+      operationId: carts_items_destroy
+      description: A ViewSet that manually implements CRUD actions for CartItem.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Cart
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: Cart item deleted.
+  /api/categories/:
+    get:
+      operationId: categories_list
+      description: |-
+        Manual CRUD ViewSet for Category.
+        Because apparently even categories need full bureaucratic processing.
+      tags:
+      - Category
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
+    post:
+      operationId: categories_create
+      description: |-
+        Manual CRUD ViewSet for Category.
+        Because apparently even categories need full bureaucratic processing.
+      tags:
+      - Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Category'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Category'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+        '400':
+          description: Validation error.
+  /api/categories/{id}/:
+    get:
+      operationId: categories_retrieve
+      description: |-
+        Manual CRUD ViewSet for Category.
+        Because apparently even categories need full bureaucratic processing.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Category
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+        '404':
+          description: Category not found.
+    put:
+      operationId: categories_update
+      description: |-
+        Manual CRUD ViewSet for Category.
+        Because apparently even categories need full bureaucratic processing.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Category'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Category'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+        '400':
+          description: Validation error.
+        '404':
+          description: Category not found.
+    patch:
+      operationId: categories_partial_update
+      description: |-
+        Manual CRUD ViewSet for Category.
+        Because apparently even categories need full bureaucratic processing.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCategory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCategory'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCategory'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+        '400':
+          description: Validation error.
+        '404':
+          description: Category not found.
+    delete:
+      operationId: categories_destroy
+      description: |-
+        Manual CRUD ViewSet for Category.
+        Because apparently even categories need full bureaucratic processing.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Category
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: Category deleted successfully.
+        '404':
+          description: Category not found.
+  /api/commerce-extras/discounts/:
+    get:
+      operationId: commerce_extras_discounts_list
+      description: Returns active discounts for public users (published and within
+        start/end date). Staff users can see all discounts.
+      summary: List active discounts
+      tags:
+      - Discounts
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Discount'
+          description: ''
+    post:
+      operationId: commerce_extras_discounts_create
+      description: Admin-only endpoint for creating a discount item.
+      summary: Create discount
+      tags:
+      - Discounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Discount'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Discount'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Discount'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Discount'
+          description: ''
+        '400':
+          description: Validation error.
+        '403':
+          description: Admin access required.
+  /api/commerce-extras/discounts/{slug}/:
+    get:
+      operationId: commerce_extras_discounts_retrieve
+      description: Returns one discount item by slug.
+      summary: Get discount detail
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - Discounts
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Discount'
+          description: ''
+        '404':
+          description: Discount not found.
+    put:
+      operationId: commerce_extras_discounts_update
+      description: Admin-only endpoint for replacing a discount item.
+      summary: Replace discount
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - Discounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Discount'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Discount'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Discount'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Discount'
+          description: ''
+        '400':
+          description: Validation error.
+        '403':
+          description: Admin access required.
+        '404':
+          description: Discount not found.
+    patch:
+      operationId: commerce_extras_discounts_partial_update
+      description: Admin-only endpoint for partially updating a discount item.
+      summary: Update discount
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - Discounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDiscount'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDiscount'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDiscount'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Discount'
+          description: ''
+        '400':
+          description: Validation error.
+        '403':
+          description: Admin access required.
+        '404':
+          description: Discount not found.
+    delete:
+      operationId: commerce_extras_discounts_destroy
+      description: Admin-only endpoint for deleting a discount item.
+      summary: Delete discount
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - Discounts
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: Discount deleted.
+        '403':
+          description: Admin access required.
+        '404':
+          description: Discount not found.
+  /api/commerce-extras/discounts/active/:
+    get:
+      operationId: commerce_extras_discounts_active_list
+      description: Returns currently active discounts (published and within start/end
+        date).
+      summary: List active discounts
+      tags:
+      - Discounts
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Discount'
+          description: ''
+  /api/commerce-extras/home/:
+    get:
+      operationId: commerce_extras_home_retrieve
+      description: Returns popular products and daily news (published within the last
+        24 hours) for the home page.
+      summary: Home page data
+      tags:
+      - Home
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/commerce-extras/me/orders/:
+    get:
+      operationId: commerce_extras_me_orders_retrieve
+      description: Returns orders that belong to the authenticated user.
+      summary: Current user orders
+      tags:
+      - Account
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/commerce-extras/me/profile/:
+    get:
+      operationId: commerce_extras_me_profile_retrieve
+      description: Returns the authenticated user's profile.
+      summary: Current user profile
+      tags:
+      - Account
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+    patch:
+      operationId: commerce_extras_me_profile_partial_update
+      description: Partially updates editable fields on the authenticated user's profile.
+      summary: Update current user profile
+      tags:
+      - Account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserProfile'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+  /api/commerce-extras/news/:
+    get:
+      operationId: commerce_extras_news_list
+      description: Returns published news from the last 24 hours for public users.
+        Staff users can see all news.
+      summary: List published news
+      tags:
+      - News
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/News'
+          description: ''
+    post:
+      operationId: commerce_extras_news_create
+      description: Admin-only endpoint for creating a news item.
+      summary: Create news
+      tags:
+      - News
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/News'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/News'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/News'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+          description: ''
+        '400':
+          description: Validation error.
+        '403':
+          description: Admin access required.
+  /api/commerce-extras/news/{slug}/:
+    get:
+      operationId: commerce_extras_news_retrieve
+      description: Returns one news item by slug.
+      summary: Get news detail
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - News
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+          description: ''
+        '404':
+          description: News not found.
+    put:
+      operationId: commerce_extras_news_update
+      description: Admin-only endpoint for replacing a news item.
+      summary: Replace news
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - News
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/News'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/News'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/News'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+          description: ''
+        '400':
+          description: Validation error.
+        '403':
+          description: Admin access required.
+        '404':
+          description: News not found.
+    patch:
+      operationId: commerce_extras_news_partial_update
+      description: Admin-only endpoint for partially updating a news item.
+      summary: Update news
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - News
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedNews'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedNews'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedNews'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+          description: ''
+        '400':
+          description: Validation error.
+        '403':
+          description: Admin access required.
+        '404':
+          description: News not found.
+    delete:
+      operationId: commerce_extras_news_destroy
+      description: Admin-only endpoint for deleting a news item.
+      summary: Delete news
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - News
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: News deleted.
+        '403':
+          description: Admin access required.
+        '404':
+          description: News not found.
+  /api/commerce-extras/news/daily/:
+    get:
+      operationId: commerce_extras_news_daily_list
+      description: Returns published news items published within the last 24 hours.
+      summary: List daily news
+      tags:
+      - News
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/News'
+          description: ''
+  /api/commerce-extras/order-addresses/:
+    get:
+      operationId: commerce_extras_order_addresses_list
+      tags:
+      - commerce-extras
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderAddress'
+          description: ''
+    post:
+      operationId: commerce_extras_order_addresses_create
+      tags:
+      - commerce-extras
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderAddress'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderAddress'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderAddress'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderAddress'
+          description: ''
+  /api/commerce-extras/order-addresses/{id}/:
+    get:
+      operationId: commerce_extras_order_addresses_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - commerce-extras
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderAddress'
+          description: ''
+    put:
+      operationId: commerce_extras_order_addresses_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - commerce-extras
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderAddress'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderAddress'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderAddress'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderAddress'
+          description: ''
+    patch:
+      operationId: commerce_extras_order_addresses_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - commerce-extras
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderAddress'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderAddress'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderAddress'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderAddress'
+          description: ''
+    delete:
+      operationId: commerce_extras_order_addresses_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - commerce-extras
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/commerce-extras/order-reviews/:
+    get:
+      operationId: commerce_extras_order_reviews_list
+      tags:
+      - commerce-extras
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderReview'
+          description: ''
+    post:
+      operationId: commerce_extras_order_reviews_create
+      tags:
+      - commerce-extras
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderReview'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderReview'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderReview'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderReview'
+          description: ''
+  /api/commerce-extras/order-reviews/{id}/:
+    get:
+      operationId: commerce_extras_order_reviews_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - commerce-extras
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderReview'
+          description: ''
+    put:
+      operationId: commerce_extras_order_reviews_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - commerce-extras
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderReview'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderReview'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderReview'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderReview'
+          description: ''
+    patch:
+      operationId: commerce_extras_order_reviews_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - commerce-extras
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderReview'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderReview'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderReview'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderReview'
+          description: ''
+    delete:
+      operationId: commerce_extras_order_reviews_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - commerce-extras
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/commerce-extras/product-comparisons/:
+    get:
+      operationId: commerce_extras_product_comparisons_list
+      tags:
+      - commerce-extras
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductComparison'
+          description: ''
+    post:
+      operationId: commerce_extras_product_comparisons_create
+      tags:
+      - commerce-extras
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductComparison'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductComparison'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductComparison'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductComparison'
+          description: ''
+  /api/commerce-extras/product-comparisons/{id}/:
+    get:
+      operationId: commerce_extras_product_comparisons_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - commerce-extras
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductComparison'
+          description: ''
+    put:
+      operationId: commerce_extras_product_comparisons_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - commerce-extras
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductComparison'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductComparison'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductComparison'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductComparison'
+          description: ''
+    patch:
+      operationId: commerce_extras_product_comparisons_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - commerce-extras
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProductComparison'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProductComparison'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProductComparison'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductComparison'
+          description: ''
+    delete:
+      operationId: commerce_extras_product_comparisons_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - commerce-extras
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/commerce-extras/products/:
+    get:
+      operationId: commerce_extras_products_retrieve
+      description: Product listing endpoint with search, category, brand, color, size,
+        price, stock, discount, new-product, popularity, ordering, and pagination
+        filters.
+      summary: Filter products
+      tags:
+      - Product List
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/commerce-extras/products/compare/:
+    post:
+      operationId: commerce_extras_products_compare_create
+      description: Compares 2 to 6 products and returns product data plus common comparable
+        fields.
+      summary: Compare products
+      tags:
+      - Product Compare
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCompareRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductCompareRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductCompareRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/company/info/:
+    get:
+      operationId: company_info_list
+      description: Get company information
+      tags:
+      - company
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompanyInfo'
+          description: ''
+  /api/company/info/{id}/:
+    get:
+      operationId: company_info_retrieve
+      description: Get company information
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Company Info.
+        required: true
+      tags:
+      - company
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyInfo'
+          description: ''
+  /api/company/info/main/:
+    get:
+      operationId: company_info_main_retrieve
+      description: Get main company info
+      tags:
+      - company
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyInfo'
+          description: ''
+  /api/company/team/:
+    get:
+      operationId: company_team_list
+      description: Get team members
+      tags:
+      - company
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamMember'
+          description: ''
+  /api/company/team/{id}/:
+    get:
+      operationId: company_team_retrieve
+      description: Get team members
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this team member.
+        required: true
+      tags:
+      - company
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamMember'
+          description: ''
+  /api/company/team/by_position/:
+    get:
+      operationId: company_team_by_position_retrieve
+      description: Filter team members by position
+      tags:
+      - company
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamMember'
+          description: ''
+  /api/contact/:
+    get:
+      operationId: contact_list
+      description: Send contact messages and manage conversations
+      tags:
+      - contact
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContactMessage'
+          description: ''
+    post:
+      operationId: contact_create
+      description: Create new contact message
+      tags:
+      - contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactMessage'
+          description: ''
+  /api/contact/{id}/:
+    get:
+      operationId: contact_retrieve
+      description: Send contact messages and manage conversations
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this contact message.
+        required: true
+      tags:
+      - contact
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactMessage'
+          description: ''
+    put:
+      operationId: contact_update
+      description: Send contact messages and manage conversations
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this contact message.
+        required: true
+      tags:
+      - contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactMessage'
+          description: ''
+    patch:
+      operationId: contact_partial_update
+      description: Send contact messages and manage conversations
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this contact message.
+        required: true
+      tags:
+      - contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedContactMessage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedContactMessage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedContactMessage'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactMessage'
+          description: ''
+    delete:
+      operationId: contact_destroy
+      description: Send contact messages and manage conversations
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this contact message.
+        required: true
+      tags:
+      - contact
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/contact/{id}/add_reply/:
+    post:
+      operationId: contact_add_reply_create
+      description: Add reply to contact message
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this contact message.
+        required: true
+      tags:
+      - contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactMessage'
+          description: ''
+  /api/contact/{id}/assign_to/:
+    post:
+      operationId: contact_assign_to_create
+      description: Assign message to staff member
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this contact message.
+        required: true
+      tags:
+      - contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactMessage'
+          description: ''
+  /api/contact/{id}/change_status/:
+    post:
+      operationId: contact_change_status_create
+      description: Change message status
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this contact message.
+        required: true
+      tags:
+      - contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ContactMessage'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactMessage'
+          description: ''
+  /api/contact/admin_list/:
+    get:
+      operationId: contact_admin_list_retrieve
+      description: Get all messages for admin
+      tags:
+      - contact
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactMessage'
+          description: ''
+  /api/contact/my_messages/:
+    get:
+      operationId: contact_my_messages_retrieve
+      description: Get current user's contact messages
+      tags:
+      - contact
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactMessage'
+          description: ''
+  /api/delivery/shipping-methods/:
+    get:
+      operationId: delivery_shipping_methods_list
+      description: Get available shipping methods
+      tags:
+      - delivery
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ShippingMethod'
+          description: ''
+  /api/delivery/shipping-methods/{id}/:
+    get:
+      operationId: delivery_shipping_methods_retrieve
+      description: Get available shipping methods
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this shipping method.
+        required: true
+      tags:
+      - delivery
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShippingMethod'
+          description: ''
+  /api/delivery/tracking/{order_id}/:
+    get:
+      operationId: delivery_tracking_retrieve
+      description: Get tracking info for specific order (lookup by order_id)
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - delivery
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderTracking'
+          description: ''
+  /api/delivery/tracking/my_orders/:
+    get:
+      operationId: delivery_tracking_my_orders_retrieve
+      description: Get tracking info for user's orders
+      tags:
+      - delivery
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderTracking'
+          description: ''
+  /api/feedback/:
+    get:
+      operationId: feedback_list
+      description: Create and view feedback
+      tags:
+      - feedback
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Feedback'
+          description: ''
+    post:
+      operationId: feedback_create
+      description: Create new feedback
+      tags:
+      - feedback
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Feedback'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Feedback'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Feedback'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+          description: ''
+  /api/feedback/{id}/:
+    get:
+      operationId: feedback_retrieve
+      description: Create and view feedback
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this feedback.
+        required: true
+      tags:
+      - feedback
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+          description: ''
+    put:
+      operationId: feedback_update
+      description: Create and view feedback
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this feedback.
+        required: true
+      tags:
+      - feedback
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Feedback'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Feedback'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Feedback'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+          description: ''
+    patch:
+      operationId: feedback_partial_update
+      description: Create and view feedback
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this feedback.
+        required: true
+      tags:
+      - feedback
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedFeedback'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedFeedback'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedFeedback'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+          description: ''
+    delete:
+      operationId: feedback_destroy
+      description: Create and view feedback
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this feedback.
+        required: true
+      tags:
+      - feedback
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/feedback/my_feedback/:
+    get:
+      operationId: feedback_my_feedback_retrieve
+      description: Get current user's feedback
+      tags:
+      - feedback
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+          description: ''
+  /api/feedback/stats/:
+    get:
+      operationId: feedback_stats_retrieve
+      description: Get feedback statistics
+      tags:
+      - feedback
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+          description: ''
+  /api/orders/:
+    get:
+      operationId: orders_list
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+          description: ''
+    post:
+      operationId: orders_create
+      tags:
+      - Orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+        '400':
+          description: Validation error.
+  /api/orders/{id}/:
+    get:
+      operationId: orders_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this order.
+        required: true
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    put:
+      operationId: orders_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this order.
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    patch:
+      operationId: orders_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this order.
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrder'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOrder'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOrder'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    delete:
+      operationId: orders_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this order.
+        required: true
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/orders/{id}/add-item/:
+    post:
+      operationId: orders_add_item_create
+      description: Add an item to an order.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this order.
+        required: true
+      tags:
+      - Orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderItem'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderItem'
+          description: ''
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderItem'
+          description: ''
+        '400':
+          description: Validation error or insufficient stock.
+        '403':
+          description: Permission denied.
+        '404':
+          description: Product not found.
+  /api/orders/{id}/remove-item/{item_id}/:
+    delete:
+      operationId: orders_remove_item_destroy
+      description: Remove an item from an order.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this order.
+        required: true
+      - in: path
+        name: item_id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      tags:
+      - Orders
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: Item removed successfully.
+        '403':
+          description: Permission denied.
+        '404':
+          description: Item not found in this order.
+  /api/orders/items/:
+    get:
+      operationId: orders_items_list
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderItem'
+          description: ''
+    post:
+      operationId: orders_items_create
+      tags:
+      - Orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderItem'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderItem'
+          description: ''
+        '400':
+          description: Validation error.
+  /api/orders/items/{id}/:
+    get:
+      operationId: orders_items_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this order item.
+        required: true
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderItem'
+          description: ''
+    put:
+      operationId: orders_items_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this order item.
+        required: true
+      tags:
+      - Orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderItem'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderItem'
+          description: ''
+        '400':
+          description: Validation error.
+    patch:
+      operationId: orders_items_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this order item.
+        required: true
+      tags:
+      - Orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderItem'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderItem'
+          description: ''
+        '400':
+          description: Validation error.
+    delete:
+      operationId: orders_items_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this order item.
+        required: true
+      tags:
+      - Orders
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: Order item deleted.
+  /api/orders/returns/:
+    get:
+      operationId: orders_returns_list
+      description: Manage return requests for orders
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReturnRequest'
+          description: ''
+    post:
+      operationId: orders_returns_create
+      description: Manage return requests for orders
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReturnRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReturnRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReturnRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnRequest'
+          description: ''
+  /api/orders/returns/{id}/:
+    get:
+      operationId: orders_returns_retrieve
+      description: Manage return requests for orders
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this return request.
+        required: true
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnRequest'
+          description: ''
+    put:
+      operationId: orders_returns_update
+      description: Manage return requests for orders
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this return request.
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReturnRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReturnRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReturnRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnRequest'
+          description: ''
+    patch:
+      operationId: orders_returns_partial_update
+      description: Manage return requests for orders
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this return request.
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedReturnRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedReturnRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedReturnRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnRequest'
+          description: ''
+    delete:
+      operationId: orders_returns_destroy
+      description: Manage return requests for orders
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this return request.
+        required: true
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/orders/returns/{id}/approve/:
+    post:
+      operationId: orders_returns_approve_create
+      description: Approve return request (admin only)
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this return request.
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReturnRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReturnRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReturnRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnRequest'
+          description: ''
+  /api/orders/returns/{id}/reject/:
+    post:
+      operationId: orders_returns_reject_create
+      description: Reject return request (admin only)
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this return request.
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReturnRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReturnRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReturnRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnRequest'
+          description: ''
+  /api/orders/returns/my_returns/:
+    get:
+      operationId: orders_returns_my_returns_retrieve
+      description: Get user's return requests
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnRequest'
+          description: ''
+  /api/payments/:
+    get:
+      operationId: payments_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - payments
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment'
+          description: ''
+    post:
+      operationId: payments_create
+      tags:
+      - payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Payment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Payment'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          description: Payment created.
+  /api/payments/{id}/:
+    get:
+      operationId: payments_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this payment.
+        required: true
+      tags:
+      - payments
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+    put:
+      operationId: payments_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this payment.
+        required: true
+      tags:
+      - payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Payment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Payment'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+    patch:
+      operationId: payments_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this payment.
+        required: true
+      tags:
+      - payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPayment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPayment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPayment'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+    delete:
+      operationId: payments_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this payment.
+        required: true
+      tags:
+      - payments
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: Payment deleted.
+  /api/payments/completed/:
+    get:
+      operationId: payments_completed_retrieve
+      description: List completed payments
+      tags:
+      - payments
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+  /api/payments/pending/:
+    get:
+      operationId: payments_pending_retrieve
+      description: List pending payments
+      tags:
+      - payments
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+  /api/products/:
+    get:
+      operationId: products_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - products
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProductList'
+          description: ''
+    post:
+      operationId: products_create
+      tags:
+      - products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+  /api/products/{id}/:
+    get:
+      operationId: products_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      tags:
+      - products
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    put:
+      operationId: products_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      tags:
+      - products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    patch:
+      operationId: products_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      tags:
+      - products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    delete:
+      operationId: products_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      tags:
+      - products
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: Product deleted.
+  /api/products/{id}/full/:
+    get:
+      operationId: products_full_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      tags:
+      - products
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductFull'
+          description: ''
+  /api/products/full/:
+    get:
+      operationId: products_full_list
+      parameters:
+      - in: query
+        name: ordering
+        schema:
+          type: string
+        description: 'Ordering fields: price, created_at, updated_at. Use -field for
+          desc.'
+      - in: query
+        name: page
+        schema:
+          type: integer
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search in name, description, category name.
+      tags:
+      - products
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProductFullList'
+          description: ''
+  /api/products/hits/:
+    get:
+      operationId: products_hits_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - products
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProductList'
+          description: ''
+  /api/products/new/:
+    get:
+      operationId: products_new_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - products
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProductList'
+          description: ''
+  /api/products/sale/:
+    get:
+      operationId: products_sale_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - products
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProductList'
+          description: ''
+  /api/users/change-password/:
+    post:
+      operationId: users_change_password_create
+      description: Change password for authenticated user.
+      summary: Change password
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: Password changed successfully.
+        '400':
+          description: Validation error.
+  /api/users/forgot-password/:
+    post:
+      operationId: users_forgot_password_create
+      description: Send a password reset verification code to the user's email.
+      summary: Forgot password
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          description: Reset code sent.
+        '400':
+          description: Validation error.
+  /api/users/login/:
+    post:
+      operationId: users_login_create
+      description: Login with username, email or phone. Returns user data and JWT
+        tokens when SimpleJWT is installed.
+      summary: User login
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+          description: ''
+        '400':
+          description: Invalid credentials or missing fields.
+        '500':
+          description: Unexpected login error.
+  /api/users/me/:
+    get:
+      operationId: users_me_retrieve
+      description: Return authenticated user profile.
+      summary: Current user
+      tags:
+      - User
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultUser'
+          description: ''
+  /api/users/me/username/:
+    post:
+      operationId: users_me_username_create
+      description: Change username for authenticated user.
+      summary: Change username
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeUsernameRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChangeUsernameRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChangeUsernameRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangeUsernameRequest'
+          description: ''
+        '400':
+          description: Validation error.
+  /api/users/register/:
+    post:
+      operationId: users_register_create
+      description: Create a new user account.
+      summary: User register
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultUser'
+          description: ''
+        '400':
+          description: Validation error.
+        '500':
+          description: Unexpected register error.
+  /api/users/resend/:
+    post:
+      operationId: users_resend_create
+      description: Resend registration verification code for an inactive user.
+      summary: Resend verification code
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendCodeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResendCodeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResendCodeRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          description: Verification code resent.
+        '400':
+          description: Validation error.
+  /api/users/reset-password/:
+    post:
+      operationId: users_reset_password_create
+      description: Reset password using email, verification code, and new password.
+      summary: Reset password
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          description: Password reset successfully.
+        '400':
+          description: Validation error.
+  /api/users/verify/:
+    post:
+      operationId: users_verify_create
+      description: Verify registration code and activate the user account.
+      summary: Verify email code
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyCodeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyCodeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyCodeRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultUser'
+          description: ''
+        '400':
+          description: Validation error.
+  /api/wishlist/:
+    get:
+      operationId: wishlist_list
+      description: Returns products saved in the current user's wishlist.
+      summary: List wishlist
+      tags:
+      - Wishlist
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WishlistItem'
+          description: ''
+    post:
+      operationId: wishlist_create
+      description: Adds a product to the current user's wishlist.
+      summary: Add product to wishlist
+      tags:
+      - Wishlist
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WishlistItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WishlistItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WishlistItem'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WishlistItem'
+          description: ''
+        '400':
+          description: Validation error.
+  /api/wishlist/{id}/:
+    get:
+      operationId: wishlist_retrieve
+      description: Returns one wishlist item owned by the current user.
+      summary: Get wishlist item
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Wishlist
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WishlistItem'
+          description: ''
+        '404':
+          description: Wishlist item not found.
+    put:
+      operationId: wishlist_update
+      description: Replaces the product stored in one wishlist item owned by the current
+        user.
+      summary: Replace wishlist item
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Wishlist
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WishlistItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WishlistItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WishlistItem'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WishlistItem'
+          description: ''
+        '400':
+          description: Validation error.
+        '404':
+          description: Wishlist item not found.
+    patch:
+      operationId: wishlist_partial_update
+      description: Partially updates one wishlist item owned by the current user.
+      summary: Update wishlist item
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Wishlist
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWishlistItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedWishlistItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedWishlistItem'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WishlistItem'
+          description: ''
+        '400':
+          description: Validation error.
+        '404':
+          description: Wishlist item not found.
+    delete:
+      operationId: wishlist_destroy
+      description: Removes a product from the current user's wishlist.
+      summary: Remove wishlist item
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Wishlist
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: Wishlist item removed.
+        '404':
+          description: Wishlist item not found.
+  /api/wishlist/toggle/:
+    post:
+      operationId: wishlist_toggle_create
+      description: Adds the product if it is not saved; removes it if it already exists.
+      summary: Toggle wishlist product
+      tags:
+      - Wishlist
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WishlistToggle'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WishlistToggle'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WishlistToggle'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: Product removed from wishlist.
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WishlistItem'
+          description: ''
+        '404':
+          description: Product not found.
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+          readOnly: true
+      required:
+      - id
+      - items
+      - user
+    CartItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product:
+          type: integer
+        quantity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+      required:
+      - id
+      - product
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+      required:
+      - id
+      - name
+    ChangePasswordRequest:
+      type: object
+      properties:
+        old_password:
+          type: string
+          writeOnly: true
+        new_password:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+    ChangeUsernameRequest:
+      type: object
+      properties:
+        username:
+          type: string
+      required:
+      - username
+    CompanyInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        mission:
+          type: string
+        vision:
+          type: string
+        established_year:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone:
+          type: string
+          maxLength: 20
+        address:
+          type: string
+        city:
+          type: string
+          maxLength: 100
+        country:
+          type: string
+          maxLength: 100
+        website:
+          type: string
+          format: uri
+          maxLength: 200
+        facebook:
+          type: string
+          format: uri
+          maxLength: 200
+        instagram:
+          type: string
+          format: uri
+          maxLength: 200
+        twitter:
+          type: string
+          format: uri
+          maxLength: 200
+        linkedin:
+          type: string
+          format: uri
+          maxLength: 200
+        logo:
+          type: string
+          format: uri
+          nullable: true
+        cover_image:
+          type: string
+          format: uri
+          nullable: true
+        team_members:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamMember'
+          readOnly: true
+      required:
+      - address
+      - city
+      - country
+      - description
+      - email
+      - id
+      - name
+      - phone
+      - team_members
+    ContactMessage:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        subject:
+          type: string
+          maxLength: 255
+        message:
+          type: string
+        sender_name:
+          type: string
+          maxLength: 150
+        sender_email:
+          type: string
+          format: email
+          maxLength: 254
+        sender_phone:
+          type: string
+          maxLength: 20
+        user:
+          type: integer
+          readOnly: true
+          nullable: true
+        user_name:
+          type: string
+          readOnly: true
+        status:
+          enum:
+          - new
+          - open
+          - in_progress
+          - resolved
+          - closed
+          type: string
+          description: |-
+            * `new` - New
+            * `open` - Open
+            * `in_progress` - In Progress
+            * `resolved` - Resolved
+            * `closed` - Closed
+          x-spec-enum-id: eb84030cab54f856
+          readOnly: true
+        priority:
+          enum:
+          - low
+          - medium
+          - high
+          - urgent
+          type: string
+          description: |-
+            * `low` - Low
+            * `medium` - Medium
+            * `high` - High
+            * `urgent` - Urgent
+          x-spec-enum-id: d6798d30633d11a9
+        assigned_to:
+          type: integer
+          readOnly: true
+          nullable: true
+        replies:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageReply'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        resolved_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+      required:
+      - assigned_to
+      - created_at
+      - id
+      - message
+      - replies
+      - resolved_at
+      - status
+      - subject
+      - updated_at
+      - user
+      - user_name
+    DefaultUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - id
+      - username
+    Discount:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        summary:
+          type: string
+        content:
+          type: string
+        image:
+          type: string
+          format: uri
+          nullable: true
+        discount_percent:
+          type: integer
+          maximum: 100
+          minimum: 0
+        products:
+          type: array
+          items:
+            type: integer
+        products_detail:
+          type: string
+          readOnly: true
+        is_published:
+          type: boolean
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - products_detail
+      - slug
+      - title
+      - updated_at
+    Feedback:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category:
+          enum:
+          - suggestion
+          - complaint
+          - appreciation
+          - bug_report
+          - feature_request
+          - other
+          type: string
+          description: |-
+            * `suggestion` - Suggestion
+            * `complaint` - Complaint
+            * `appreciation` - Appreciation
+            * `bug_report` - Bug Report
+            * `feature_request` - Feature Request
+            * `other` - Other
+          x-spec-enum-id: 967e5c21b87e30b9
+        rating:
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          description: |-
+            * `1` - 1 - Very Poor
+            * `2` - 2 - Poor
+            * `3` - 3 - Average
+            * `4` - 4 - Good
+            * `5` - 5 - Excellent
+          x-spec-enum-id: dc2b338c966beae2
+          minimum: -9223372036854775808
+          maximum: 9223372036854775807
+        title:
+          type: string
+          maxLength: 255
+        message:
+          type: string
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        name:
+          type: string
+          maxLength: 150
+        phone:
+          type: string
+          maxLength: 20
+        user:
+          type: integer
+          readOnly: true
+          nullable: true
+        user_name:
+          type: string
+          readOnly: true
+        is_read:
+          type: boolean
+          readOnly: true
+        is_resolved:
+          type: boolean
+          readOnly: true
+        admin_response:
+          type: string
+          readOnly: true
+        attachments:
+          description: URLs of attached files
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - admin_response
+      - created_at
+      - id
+      - is_read
+      - is_resolved
+      - message
+      - title
+      - user
+      - user_name
+    ForgotPasswordRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+    LoginResponse:
+      type: object
+      properties:
+        user:
+          type: object
+          additionalProperties: {}
+        refresh:
+          type: string
+        access:
+          type: string
+      required:
+      - user
+    MessageReply:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        sender:
+          type: integer
+          readOnly: true
+          nullable: true
+        sender_name:
+          type: string
+          readOnly: true
+        content:
+          type: string
+        is_internal:
+          type: boolean
+          description: Internal note not visible to user
+        attachments:
+          description: URLs of attached files
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - content
+      - created_at
+      - id
+      - sender
+      - sender_name
+    News:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        summary:
+          type: string
+        content:
+          type: string
+        image:
+          type: string
+          format: uri
+          nullable: true
+        is_published:
+          type: boolean
+        published_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - content
+      - created_at
+      - id
+      - slug
+      - title
+      - updated_at
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+        user_username:
+          type: string
+          readOnly: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+          readOnly: true
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        status:
+          enum:
+          - PENDING
+          - AWAITING_PAYMENT
+          - PROCESSING
+          - SHIPPED
+          - IN_TRANSIT
+          - DELIVERED
+          - COMPLETED
+          - CANCELLED
+          type: string
+          description: |-
+            * `PENDING` - Pending
+            * `AWAITING_PAYMENT` - Awaiting Payment
+            * `PROCESSING` - Processing
+            * `SHIPPED` - Shipped
+            * `IN_TRANSIT` - In Transit
+            * `DELIVERED` - Delivered
+            * `COMPLETED` - Completed
+            * `CANCELLED` - Cancelled
+          x-spec-enum-id: 2722008e224cf404
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - items
+      - total_price
+      - user
+      - user_username
+    OrderAddress:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 120
+        last_name:
+          type: string
+          maxLength: 120
+        phone:
+          type: string
+          maxLength: 40
+        country:
+          type: string
+          maxLength: 120
+        region:
+          type: string
+          maxLength: 120
+        city:
+          type: string
+          maxLength: 120
+        district:
+          type: string
+          maxLength: 120
+        street:
+          type: string
+          maxLength: 255
+        house:
+          type: string
+          maxLength: 80
+        apartment:
+          type: string
+          maxLength: 80
+        postal_code:
+          type: string
+          maxLength: 30
+        note:
+          type: string
+        is_default:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - city
+      - created_at
+      - first_name
+      - id
+      - phone
+      - street
+      - updated_at
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product:
+          type: integer
+        product_name:
+          type: string
+          readOnly: true
+        product_image:
+          type: string
+          format: uri
+          readOnly: true
+        quantity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        total_price:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - price
+      - product
+      - product_image
+      - product_name
+      - total_price
+    OrderReview:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        order:
+          type: integer
+        order_detail:
+          type: string
+          readOnly: true
+        rating:
+          type: integer
+          maximum: 5
+          minimum: 1
+        comment:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - order
+      - order_detail
+      - rating
+      - updated_at
+    OrderTracking:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        order:
+          type: integer
+          readOnly: true
+        shipping_method:
+          allOf:
+          - $ref: '#/components/schemas/ShippingMethod'
+          readOnly: true
+        status:
+          enum:
+          - pending
+          - processing
+          - shipped
+          - in_transit
+          - delivered
+          - cancelled
+          type: string
+          description: |-
+            * `pending` - Pending
+            * `processing` - Processing
+            * `shipped` - Shipped
+            * `in_transit` - In Transit
+            * `delivered` - Delivered
+            * `cancelled` - Cancelled
+          x-spec-enum-id: 9204d7879a788395
+        tracking_number:
+          type: string
+          maxLength: 100
+        current_location:
+          type: string
+          maxLength: 255
+        shipped_date:
+          type: string
+          format: date-time
+          nullable: true
+        estimated_delivery:
+          type: string
+          format: date-time
+          nullable: true
+        delivered_date:
+          type: string
+          format: date-time
+          nullable: true
+        notes:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - order
+      - shipping_method
+      - updated_at
+    PaginatedProductFullList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductFull'
+    PaginatedProductList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    PatchedCart:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+          readOnly: true
+    PatchedCartItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product:
+          type: integer
+        quantity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+    PatchedCategory:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+    PatchedContactMessage:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        subject:
+          type: string
+          maxLength: 255
+        message:
+          type: string
+        sender_name:
+          type: string
+          maxLength: 150
+        sender_email:
+          type: string
+          format: email
+          maxLength: 254
+        sender_phone:
+          type: string
+          maxLength: 20
+        user:
+          type: integer
+          readOnly: true
+          nullable: true
+        user_name:
+          type: string
+          readOnly: true
+        status:
+          enum:
+          - new
+          - open
+          - in_progress
+          - resolved
+          - closed
+          type: string
+          description: |-
+            * `new` - New
+            * `open` - Open
+            * `in_progress` - In Progress
+            * `resolved` - Resolved
+            * `closed` - Closed
+          x-spec-enum-id: eb84030cab54f856
+          readOnly: true
+        priority:
+          enum:
+          - low
+          - medium
+          - high
+          - urgent
+          type: string
+          description: |-
+            * `low` - Low
+            * `medium` - Medium
+            * `high` - High
+            * `urgent` - Urgent
+          x-spec-enum-id: d6798d30633d11a9
+        assigned_to:
+          type: integer
+          readOnly: true
+          nullable: true
+        replies:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageReply'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        resolved_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+    PatchedDiscount:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        summary:
+          type: string
+        content:
+          type: string
+        image:
+          type: string
+          format: uri
+          nullable: true
+        discount_percent:
+          type: integer
+          maximum: 100
+          minimum: 0
+        products:
+          type: array
+          items:
+            type: integer
+        products_detail:
+          type: string
+          readOnly: true
+        is_published:
+          type: boolean
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedFeedback:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category:
+          enum:
+          - suggestion
+          - complaint
+          - appreciation
+          - bug_report
+          - feature_request
+          - other
+          type: string
+          description: |-
+            * `suggestion` - Suggestion
+            * `complaint` - Complaint
+            * `appreciation` - Appreciation
+            * `bug_report` - Bug Report
+            * `feature_request` - Feature Request
+            * `other` - Other
+          x-spec-enum-id: 967e5c21b87e30b9
+        rating:
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          description: |-
+            * `1` - 1 - Very Poor
+            * `2` - 2 - Poor
+            * `3` - 3 - Average
+            * `4` - 4 - Good
+            * `5` - 5 - Excellent
+          x-spec-enum-id: dc2b338c966beae2
+          minimum: -9223372036854775808
+          maximum: 9223372036854775807
+        title:
+          type: string
+          maxLength: 255
+        message:
+          type: string
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        name:
+          type: string
+          maxLength: 150
+        phone:
+          type: string
+          maxLength: 20
+        user:
+          type: integer
+          readOnly: true
+          nullable: true
+        user_name:
+          type: string
+          readOnly: true
+        is_read:
+          type: boolean
+          readOnly: true
+        is_resolved:
+          type: boolean
+          readOnly: true
+        admin_response:
+          type: string
+          readOnly: true
+        attachments:
+          description: URLs of attached files
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedNews:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        summary:
+          type: string
+        content:
+          type: string
+        image:
+          type: string
+          format: uri
+          nullable: true
+        is_published:
+          type: boolean
+        published_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedOrder:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+        user_username:
+          type: string
+          readOnly: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+          readOnly: true
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        status:
+          enum:
+          - PENDING
+          - AWAITING_PAYMENT
+          - PROCESSING
+          - SHIPPED
+          - IN_TRANSIT
+          - DELIVERED
+          - COMPLETED
+          - CANCELLED
+          type: string
+          description: |-
+            * `PENDING` - Pending
+            * `AWAITING_PAYMENT` - Awaiting Payment
+            * `PROCESSING` - Processing
+            * `SHIPPED` - Shipped
+            * `IN_TRANSIT` - In Transit
+            * `DELIVERED` - Delivered
+            * `COMPLETED` - Completed
+            * `CANCELLED` - Cancelled
+          x-spec-enum-id: 2722008e224cf404
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedOrderAddress:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 120
+        last_name:
+          type: string
+          maxLength: 120
+        phone:
+          type: string
+          maxLength: 40
+        country:
+          type: string
+          maxLength: 120
+        region:
+          type: string
+          maxLength: 120
+        city:
+          type: string
+          maxLength: 120
+        district:
+          type: string
+          maxLength: 120
+        street:
+          type: string
+          maxLength: 255
+        house:
+          type: string
+          maxLength: 80
+        apartment:
+          type: string
+          maxLength: 80
+        postal_code:
+          type: string
+          maxLength: 30
+        note:
+          type: string
+        is_default:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedOrderItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product:
+          type: integer
+        product_name:
+          type: string
+          readOnly: true
+        product_image:
+          type: string
+          format: uri
+          readOnly: true
+        quantity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        total_price:
+          type: string
+          readOnly: true
+    PatchedOrderReview:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        order:
+          type: integer
+        order_detail:
+          type: string
+          readOnly: true
+        rating:
+          type: integer
+          maximum: 5
+          minimum: 1
+        comment:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedPayment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        amount:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 1
+          format: int64
+        method:
+          enum:
+          - CARD
+          - CASH
+          - CLICK
+          - PAYME
+          type: string
+          description: |-
+            * `CARD` - Card
+            * `CASH` - Cash
+            * `CLICK` - Click
+            * `PAYME` - Payme
+          x-spec-enum-id: 07686025a1b93842
+        status:
+          enum:
+          - PENDING
+          - PROCESSING
+          - COMPLETED
+          - FAILED
+          - REFUNDED
+          - CANCELED
+          type: string
+          description: |-
+            * `PENDING` - Pending
+            * `PROCESSING` - Processing
+            * `COMPLETED` - Completed
+            * `FAILED` - Failed
+            * `REFUNDED` - Refunded
+            * `CANCELED` - Canceled
+          x-spec-enum-id: 73809d250c98fe38
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        order:
+          type: integer
+    PatchedProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        has_discount:
+          type: boolean
+          readOnly: true
+        discounted_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 500
+        price:
+          type: string
+          maxLength: 255
+        old_price:
+          type: string
+          nullable: true
+          maxLength: 255
+        discount_percent:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        image:
+          type: string
+          format: uri
+        specifications: {}
+        advantages: {}
+        is_hit:
+          type: boolean
+        is_new:
+          type: boolean
+        is_sale:
+          type: boolean
+        stock:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        category:
+          type: integer
+    PatchedProductComparison:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 120
+        products:
+          type: array
+          items:
+            type: integer
+        products_detail:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedReturnRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        order:
+          type: integer
+        order_id:
+          type: integer
+          readOnly: true
+        order_item:
+          type: integer
+        order_item_id:
+          type: integer
+          readOnly: true
+        product_name:
+          type: string
+          readOnly: true
+        reason:
+          enum:
+          - defective
+          - damaged
+          - wrong_item
+          - not_as_described
+          - changed_mind
+          - other
+          type: string
+          description: |-
+            * `defective` - Defective Product
+            * `damaged` - Damaged in Shipping
+            * `wrong_item` - Wrong Item Received
+            * `not_as_described` - Not as Described
+            * `changed_mind` - Changed Mind
+            * `other` - Other
+          x-spec-enum-id: b8bccdb5bb0676a6
+        description:
+          type: string
+          description: Detailed explanation of the return
+        status:
+          enum:
+          - pending
+          - approved
+          - rejected
+          - in_progress
+          - completed
+          type: string
+          description: |-
+            * `pending` - Pending
+            * `approved` - Approved
+            * `rejected` - Rejected
+            * `in_progress` - In Progress
+            * `completed` - Completed
+          x-spec-enum-id: 365508a0d565a35a
+          readOnly: true
+        admin_notes:
+          type: string
+          readOnly: true
+          description: Notes from admin
+        return_shipping_cost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+          nullable: true
+          description: Cost for return shipping, if customer needs to pay
+        refund_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+          nullable: true
+          description: Amount to be refunded
+        requested_at:
+          type: string
+          format: date-time
+          readOnly: true
+        approved_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        received_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        completed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+    PatchedUserProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+    PatchedWishlistItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product:
+          type: integer
+        product_detail:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    Payment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        amount:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 1
+          format: int64
+        method:
+          enum:
+          - CARD
+          - CASH
+          - CLICK
+          - PAYME
+          type: string
+          description: |-
+            * `CARD` - Card
+            * `CASH` - Cash
+            * `CLICK` - Click
+            * `PAYME` - Payme
+          x-spec-enum-id: 07686025a1b93842
+        status:
+          enum:
+          - PENDING
+          - PROCESSING
+          - COMPLETED
+          - FAILED
+          - REFUNDED
+          - CANCELED
+          type: string
+          description: |-
+            * `PENDING` - Pending
+            * `PROCESSING` - Processing
+            * `COMPLETED` - Completed
+            * `FAILED` - Failed
+            * `REFUNDED` - Refunded
+            * `CANCELED` - Canceled
+          x-spec-enum-id: 73809d250c98fe38
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        order:
+          type: integer
+      required:
+      - amount
+      - created_at
+      - id
+      - method
+      - order
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        has_discount:
+          type: boolean
+          readOnly: true
+        discounted_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 500
+        price:
+          type: string
+          maxLength: 255
+        old_price:
+          type: string
+          nullable: true
+          maxLength: 255
+        discount_percent:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        image:
+          type: string
+          format: uri
+        specifications: {}
+        advantages: {}
+        is_hit:
+          type: boolean
+        is_new:
+          type: boolean
+        is_sale:
+          type: boolean
+        stock:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        category:
+          type: integer
+      required:
+      - category
+      - created_at
+      - description
+      - discounted_price
+      - has_discount
+      - id
+      - image
+      - is_new
+      - is_sale
+      - name
+      - price
+      - stock
+      - updated_at
+    ProductCompareRequest:
+      type: object
+      properties:
+        product_ids:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+          maxItems: 6
+          minItems: 2
+      required:
+      - product_ids
+    ProductComparison:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 120
+        products:
+          type: array
+          items:
+            type: integer
+        products_detail:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - products
+      - products_detail
+      - updated_at
+    ProductFull:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category:
+          allOf:
+          - $ref: '#/components/schemas/Category'
+          readOnly: true
+        has_discount:
+          type: boolean
+          readOnly: true
+        discounted_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,2})?$
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 500
+        price:
+          type: string
+          maxLength: 255
+        old_price:
+          type: string
+          nullable: true
+          maxLength: 255
+        discount_percent:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        image:
+          type: string
+          format: uri
+        specifications: {}
+        advantages: {}
+        is_hit:
+          type: boolean
+        is_new:
+          type: boolean
+        is_sale:
+          type: boolean
+        stock:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - category
+      - created_at
+      - description
+      - discounted_price
+      - has_discount
+      - id
+      - image
+      - is_new
+      - is_sale
+      - name
+      - price
+      - stock
+      - updated_at
+    RegisterRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - id
+      - username
+    ResendCodeRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    ResetPasswordRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        code:
+          type: string
+          maxLength: 6
+        new_password:
+          type: string
+          writeOnly: true
+          minLength: 6
+      required:
+      - code
+      - email
+      - new_password
+    ReturnRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        order:
+          type: integer
+        order_id:
+          type: integer
+          readOnly: true
+        order_item:
+          type: integer
+        order_item_id:
+          type: integer
+          readOnly: true
+        product_name:
+          type: string
+          readOnly: true
+        reason:
+          enum:
+          - defective
+          - damaged
+          - wrong_item
+          - not_as_described
+          - changed_mind
+          - other
+          type: string
+          description: |-
+            * `defective` - Defective Product
+            * `damaged` - Damaged in Shipping
+            * `wrong_item` - Wrong Item Received
+            * `not_as_described` - Not as Described
+            * `changed_mind` - Changed Mind
+            * `other` - Other
+          x-spec-enum-id: b8bccdb5bb0676a6
+        description:
+          type: string
+          description: Detailed explanation of the return
+        status:
+          enum:
+          - pending
+          - approved
+          - rejected
+          - in_progress
+          - completed
+          type: string
+          description: |-
+            * `pending` - Pending
+            * `approved` - Approved
+            * `rejected` - Rejected
+            * `in_progress` - In Progress
+            * `completed` - Completed
+          x-spec-enum-id: 365508a0d565a35a
+          readOnly: true
+        admin_notes:
+          type: string
+          readOnly: true
+          description: Notes from admin
+        return_shipping_cost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+          nullable: true
+          description: Cost for return shipping, if customer needs to pay
+        refund_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+          nullable: true
+          description: Amount to be refunded
+        requested_at:
+          type: string
+          format: date-time
+          readOnly: true
+        approved_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        received_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        completed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+      required:
+      - admin_notes
+      - approved_at
+      - completed_at
+      - description
+      - id
+      - order
+      - order_id
+      - order_item
+      - order_item_id
+      - product_name
+      - reason
+      - received_at
+      - refund_amount
+      - requested_at
+      - return_shipping_cost
+      - status
+    ShippingMethod:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        delivery_days:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          description: Estimated delivery days
+        is_active:
+          type: boolean
+      required:
+      - delivery_days
+      - id
+      - name
+      - price
+    TeamMember:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 150
+        position:
+          enum:
+          - ceo
+          - cto
+          - manager
+          - developer
+          - designer
+          - marketing
+          - support
+          - other
+          type: string
+          description: |-
+            * `ceo` - CEO
+            * `cto` - CTO
+            * `manager` - Manager
+            * `developer` - Developer
+            * `designer` - Designer
+            * `marketing` - Marketing
+            * `support` - Customer Support
+            * `other` - Other
+          x-spec-enum-id: 44931636917f2e9a
+        bio:
+          type: string
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone:
+          type: string
+          maxLength: 20
+        linkedin:
+          type: string
+          format: uri
+          maxLength: 200
+        twitter:
+          type: string
+          format: uri
+          maxLength: 200
+        instagram:
+          type: string
+          format: uri
+          maxLength: 200
+        profile_image:
+          type: string
+          format: uri
+          nullable: true
+      required:
+      - id
+      - name
+      - position
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - email
+      - id
+      - username
+    VerifyCodeRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        code:
+          type: string
+          maxLength: 6
+      required:
+      - code
+      - email
+    WishlistItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product:
+          type: integer
+        product_detail:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - product
+      - product_detail
+    WishlistToggle:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          minimum: 1
+      required:
+      - product_id
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
