@@ -51,6 +51,10 @@ INSTALLED_APPS = [
     'category',
     'cart',
     'commerce_extras',
+    'delivery',
+    'company',
+    'feedback',
+    'contact',
     # other apps
     'rest_framework',
     'rest_framework_simplejwt',
