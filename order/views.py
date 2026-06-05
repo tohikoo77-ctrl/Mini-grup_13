@@ -2,9 +2,10 @@ from drf_spectacular.utils import extend_schema, OpenApiResponse
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
-from .models import Order, OrderItem
-from .serializers import OrderSerializer, OrderItemSerializer
+from .models import Order, OrderItem, ReturnRequest
+from .serializers import OrderSerializer, OrderItemSerializer, ReturnRequestSerializer
 from product.models import Product
 
 
@@ -180,3 +181,68 @@ class OrderItemViewSet(viewsets.ModelViewSet):
     )
     def destroy(self, request, *args, **kwargs):
         return super().destroy(request, *args, **kwargs)
+
+
+class ReturnRequestViewSet(viewsets.ModelViewSet):
+    """Manage return requests for orders"""
+    queryset = ReturnRequest.objects.all()
+    serializer_class = ReturnRequestSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        """Users see only their own return requests"""
+        if self.request.user.is_staff:
+            return ReturnRequest.objects.all()
+        return ReturnRequest.objects.filter(order__user=self.request.user)
+
+    def perform_create(self, serializer):
+        """Ensure return request belongs to user's order"""
+        order_id = self.request.data.get('order')
+        order_item_id = self.request.data.get('order_item')
+        
+        try:
+            order = Order.objects.get(id=order_id, user=self.request.user)
+            order_item = OrderItem.objects.get(id=order_item_id, order=order)
+            
+            # Check if return already exists for this item
+            if ReturnRequest.objects.filter(order_item=order_item).exists():
+                raise serializers.ValidationError("A return request already exists for this item")
+            
+            serializer.save()
+        except Order.DoesNotExist:
+            raise serializers.ValidationError("Order not found")
+        except OrderItem.DoesNotExist:
+            raise serializers.ValidationError("Order item not found")
+
+    @action(detail=False, methods=['get'])
+    def my_returns(self, request):
+        """Get user's return requests"""
+        returns = ReturnRequest.objects.filter(order__user=request.user)
+        serializer = self.get_serializer(returns, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    def approve(self, request, pk=None):
+        """Approve return request (admin only)"""
+        if not request.user.is_staff:
+            return Response({'error': 'Only admin can approve returns'}, status=status.HTTP_403_FORBIDDEN)
+        
+        ret = self.get_object()
+        ret.status = 'approved'
+        ret.admin_notes = request.data.get('notes', '')
+        ret.save()
+        serializer = self.get_serializer(ret)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    def reject(self, request, pk=None):
+        """Reject return request (admin only)"""
+        if not request.user.is_staff:
+            return Response({'error': 'Only admin can reject returns'}, status=status.HTTP_403_FORBIDDEN)
+        
+        ret = self.get_object()
+        ret.status = 'rejected'
+        ret.admin_notes = request.data.get('notes', '')
+        ret.save()
+        serializer = self.get_serializer(ret)
+        return Response(serializer.data)

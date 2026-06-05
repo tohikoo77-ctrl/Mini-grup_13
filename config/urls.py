@@ -22,6 +22,10 @@ def api_root(request):
             "commerce_extras": "/api/commerce-extras/",
             "news": "/api/commerce-extras/news/",
             "discounts": "/api/commerce-extras/discounts/",
+            "delivery": "/api/delivery/",
+            "company": "/api/company/",
+            "feedback": "/api/feedback/",
+            "contact": "/api/contact/",
         }
     )
 
@@ -54,6 +58,10 @@ add_include(urlpatterns, "api/orders/", "order.urls")
 add_include(urlpatterns, "api/wishlist/", "commerce_extras.wishlist_urls")
 add_include(urlpatterns, "api/payments/", "payment.urls")
 add_include(urlpatterns, "api/commerce-extras/", "commerce_extras.urls")
+add_include(urlpatterns, "api/delivery/", "delivery.urls")
+add_include(urlpatterns, "api/company/", "company.urls")
+add_include(urlpatterns, "api/feedback/", "feedback.urls")
+add_include(urlpatterns, "api/contact/", "contact.urls")
 
 
 try:
