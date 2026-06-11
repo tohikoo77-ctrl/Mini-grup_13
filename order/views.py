@@ -1,9 +1,12 @@
+from decimal import Decimal
+
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
+from cart.models import Cart
 from .models import Order, OrderItem, ReturnRequest
 from .serializers import OrderSerializer, OrderItemSerializer, ReturnRequestSerializer
 from product.models import Product
@@ -25,8 +28,30 @@ class OrderViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
-       
-        serializer.save(user=self.request.user)
+        order = serializer.save(user=self.request.user)
+
+        if not self.request.user.is_authenticated:
+            return
+
+        try:
+            cart = Cart.objects.get(user=self.request.user)
+        except Cart.DoesNotExist:
+            return
+
+        cart_items = cart.items.select_related('product')
+        if not cart_items.exists():
+            return
+
+        for cart_item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=cart_item.product,
+                quantity=cart_item.quantity,
+                price=Decimal(cart_item.product.price),
+            )
+
+        order.update_total_price()
+        cart_items.delete()
 
     @extend_schema(
         tags=["Orders"],
