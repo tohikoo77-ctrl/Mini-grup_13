@@ -6,7 +6,6 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from cart.models import Cart
 from .models import Order, OrderItem, ReturnRequest
 from .serializers import OrderSerializer, OrderItemSerializer, ReturnRequestSerializer
 from product.models import Product
