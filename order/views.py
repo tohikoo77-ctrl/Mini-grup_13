@@ -7,8 +7,16 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from .models import Order, OrderItem, ReturnRequest
-from .serializers import OrderSerializer, OrderItemSerializer, ReturnRequestSerializer
-from product.models import Product
+from .serializers import (
+    CheckoutSerializer,
+    OrderItemSerializer,
+    OrderSerializer,
+    ReturnRequestSerializer,
+)
+from payment.models import Payment
+from payment.serializers import PaymentSerializer
+from commerce_extras.models import OrderAddress
+from delivery.models import ShippingMethod
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -51,6 +59,85 @@ class OrderViewSet(viewsets.ModelViewSet):
 
         order.update_total_price()
         cart_items.delete()
+
+    @extend_schema(
+        tags=["Orders"],
+        request=CheckoutSerializer,
+        responses={
+            201: OpenApiResponse(description="Order created and payment initialized."),
+            400: OpenApiResponse(description="Cart empty or invalid request."),
+        },
+    )
+    @action(detail=False, methods=["post"], url_path="checkout", permission_classes=[IsAuthenticated])
+    def checkout(self, request):
+        serializer = CheckoutSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        cart = Cart.objects.filter(user=request.user).first()
+        if not cart or not cart.items.exists():
+            return Response(
+                {"error": "Cart is empty."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        payment_method = serializer.validated_data['payment_method']
+        shipping_method_id = serializer.validated_data.get('shipping_method_id')
+        order_address_id = serializer.validated_data.get('order_address_id')
+
+        shipping_method = None
+        if shipping_method_id is not None:
+            shipping_method = ShippingMethod.objects.filter(id=shipping_method_id, is_active=True).first()
+            if shipping_method is None:
+                return Response(
+                    {"error": "Invalid shipping method."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+        order_address = None
+        if order_address_id is not None:
+            order_address = OrderAddress.objects.filter(id=order_address_id, user=request.user).first()
+            if order_address is None:
+                return Response(
+                    {"error": "Invalid order address."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+        order = Order.objects.create(user=request.user)
+        total_price = Decimal(0)
+        for cart_item in cart.items.select_related('product'):
+            item_price = Decimal(cart_item.product.price)
+            OrderItem.objects.create(
+                order=order,
+                product=cart_item.product,
+                quantity=cart_item.quantity,
+                price=item_price,
+            )
+            total_price += item_price * cart_item.quantity
+
+        if shipping_method is not None:
+            total_price += Decimal(shipping_method.price)
+
+        order.total_price = total_price
+        order.status = Order.Status.AWAITING_PAYMENT
+        order.save(update_fields=['total_price', 'status'])
+
+        payment = Payment.objects.create(
+            order=order,
+            amount=int(total_price),
+            method=payment_method,
+            status=Payment.Status.PENDING,
+        )
+
+        cart.items.all().delete()
+
+        return Response(
+            {
+                "order_id": order.id,
+                "payment_id": payment.id,
+                "status": order.status,
+            },
+            status=status.HTTP_201_CREATED,
+        )
 
     @extend_schema(
         tags=["Orders"],
