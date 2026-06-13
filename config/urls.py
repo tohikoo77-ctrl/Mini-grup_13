@@ -26,6 +26,7 @@ def api_root(request):
             "company": "/api/company/",
             "feedback": "/api/feedback/",
             "contact": "/api/contact/",
+            "faq": "/api/faq/",
         }
     )
 
@@ -62,6 +63,7 @@ add_include(urlpatterns, "api/delivery/", "delivery.urls")
 add_include(urlpatterns, "api/company/", "company.urls")
 add_include(urlpatterns, "api/feedback/", "feedback.urls")
 add_include(urlpatterns, "api/contact/", "contact.urls")
+add_include(urlpatterns, "api/faq/", "faq.urls")
 
 
 try:

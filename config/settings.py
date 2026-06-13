@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'company',
     'feedback',
     'contact',
+    'faq',
     # other apps
     'rest_framework',
     'rest_framework_simplejwt',
