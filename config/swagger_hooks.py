@@ -150,9 +150,12 @@ _PATH_BODY_RULES = (
         {
             "type": "object",
             "properties": {
-                "address": {"type": "string"},
                 "payment_method": {"type": "string"},
+                "shipping_method_id": {"type": "integer"},
+                "order_address_id": {"type": "integer"},
+                "note": {"type": "string"},
             },
+            "required": ["payment_method"],
         },
     )),
 )

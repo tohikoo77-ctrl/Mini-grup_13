@@ -1,6 +1,13 @@
 from rest_framework import serializers
 from .models import Order, OrderItem, ReturnRequest
 
+CHECKOUT_PAYMENT_METHODS = [
+    ('CARD', 'Card'),
+    ('CASH', 'Cash'),
+    ('CLICK', 'Click'),
+    ('PAYME', 'Payme'),
+]
+
 
 class OrderItemSerializer(serializers.ModelSerializer):
     product_name = serializers.CharField(source='product.name', read_only=True)
@@ -39,6 +46,13 @@ class OrderSerializer(serializers.ModelSerializer):
             'created_at'
         ]
         read_only_fields = ['total_price', 'created_at']
+
+
+class CheckoutSerializer(serializers.Serializer):
+    payment_method = serializers.ChoiceField(choices=CHECKOUT_PAYMENT_METHODS)
+    shipping_method_id = serializers.IntegerField(required=False)
+    order_address_id = serializers.IntegerField(required=False)
+    note = serializers.CharField(required=False, allow_blank=True)
 
 
 class ReturnRequestSerializer(serializers.ModelSerializer):
