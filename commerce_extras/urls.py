@@ -22,6 +22,7 @@ router.register("order-reviews", OrderReviewViewSet, basename="order-reviews")
 router.register("product-comparisons", ProductComparisonViewSet, basename="product-comparisons")
 
 urlpatterns = [
+    path("home/katalog/", HomeKatalogAPIView.as_view(), name="home-katalog"),
     path("home/", HomeView.as_view(), name="home"),
     path("products/", ProductDiscoveryView.as_view(), name="products-discovery"),
     path("products/compare/", ProductCompareView.as_view(), name="products-compare"),
@@ -29,3 +30,6 @@ urlpatterns = [
     path("me/profile/", UserProfileView.as_view(), name="user-profile"),
     *router.urls,
 ]
+from django.urls import path
+
+from .views import HomeKatalogAPIView
