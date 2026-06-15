@@ -6,6 +6,8 @@ from django.contrib import admin
 from django.http import JsonResponse
 from django.urls import include, path
 
+from commerce_extras.views import HomeKatalogAPIView
+
 
 def api_root(request):
     return JsonResponse(
@@ -15,6 +17,7 @@ def api_root(request):
             "users": "/api/users/",
             "products": "/api/products/",
             "categories": "/api/categories/",
+            "catalog": "/api/catalog/",
             "carts": "/api/carts/",
             "orders": "/api/orders/",
             "wishlist": "/api/wishlist/",
@@ -58,6 +61,7 @@ add_include(urlpatterns, "api/orders/", "order.urls")
 add_include(urlpatterns, "api/wishlist/", "commerce_extras.wishlist_urls")
 add_include(urlpatterns, "api/payments/", "payment.urls")
 add_include(urlpatterns, "api/commerce-extras/", "commerce_extras.urls")
+path("api/catalog/", HomeKatalogAPIView.as_view(), name="catalog")
 add_include(urlpatterns, "api/delivery/", "delivery.urls")
 add_include(urlpatterns, "api/company/", "company.urls")
 add_include(urlpatterns, "api/feedback/", "feedback.urls")
