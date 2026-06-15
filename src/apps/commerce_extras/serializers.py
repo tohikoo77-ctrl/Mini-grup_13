@@ -282,3 +282,68 @@ class ChangeUsernameSerializer(serializers.Serializer):
         user.username = self.validated_data["username"]
         user.save(update_fields=["username"])
         return user
+    
+from rest_framework import serializers
+
+try:
+    from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
+except ImportError:
+    OpenApiExample = None
+    extend_schema_serializer = None
+
+
+def swagger_serializer(*args, **kwargs):
+    if extend_schema_serializer is None:
+        return lambda serializer_class: serializer_class
+    return extend_schema_serializer(*args, **kwargs)
+
+
+@swagger_serializer(
+    examples=[
+        OpenApiExample(
+            "Home category",
+            value={
+                "title": "Сантехника",
+                "image": "/media/home/categories/plumbing.png",
+                "url": "/catalog/santehnika/",
+            },
+        ),
+        OpenApiExample(
+            "Catalog shortcut",
+            value={
+                "title": "Перейти в каталог",
+                "image": None,
+                "url": "/catalog/",
+            },
+        ),
+    ]
+    if OpenApiExample is not None
+    else None,
+)
+class HomeCategorySerializer(serializers.Serializer):
+    title = serializers.CharField()
+    image = serializers.ImageField(required=False, allow_null=True)
+    url = serializers.CharField(required=False)
+
+
+@swagger_serializer(
+    examples=[
+        OpenApiExample(
+            "Home catalog shortcut",
+            value={
+                "title": "Перейти в каталог",
+                "url": "/catalog/",
+            },
+        )
+    ]
+    if OpenApiExample is not None
+    else None,
+)
+class HomeCatalogShortcutSerializer(serializers.Serializer):
+    title = serializers.CharField(default="Перейти в каталог")
+    url = serializers.CharField(default="/catalog/")
+
+
+class HomeCategoriesSwaggerSerializer(serializers.Serializer):
+    categories = HomeCategorySerializer(many=True)
+    catalog = HomeCatalogShortcutSerializer()
