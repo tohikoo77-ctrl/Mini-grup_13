@@ -331,7 +331,7 @@ def swagger_serializer(*args, **kwargs):
             "Home katalog item",
             value={
                 "title": "Сантехника",
-                "image": "/media/home/katalog/plumbing.png",
+                "image": "/media/products/mix.jpg",
                 "url": "/catalog/santehnika/",
             },
         ),
@@ -339,7 +339,7 @@ def swagger_serializer(*args, **kwargs):
             "Catalog shortcut",
             value={
                 "title": "Перейти в каталог",
-                "image": None,
+                "image": "/media/products/mix.jpg",
                 "url": "/catalog/",
             },
         ),
@@ -359,6 +359,7 @@ class HomeKatalogItemSerializer(serializers.Serializer):
             "Home katalog shortcut",
             value={
                 "title": "Перейти в каталог",
+                "image": "/media/products/mix.jpg",
                 "url": "/catalog/",
             },
         )

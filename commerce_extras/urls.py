@@ -4,6 +4,7 @@ from rest_framework.routers import DefaultRouter
 from .news_views import NewsViewSet
 from .discounts_views import DiscountViewSet
 from .views import (
+    HomeKatalogAPIView,
     HomeView,
     OrderAddressViewSet,
     OrderReviewViewSet,
@@ -30,6 +31,3 @@ urlpatterns = [
     path("me/profile/", UserProfileView.as_view(), name="user-profile"),
     *router.urls,
 ]
-from django.urls import path
-
-from .views import HomeKatalogAPIView
