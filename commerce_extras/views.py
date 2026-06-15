@@ -959,12 +959,12 @@ HOME_KATALOG_ITEMS = [
 
 class HomeKatalogAPIView(APIView):
     @extend_schema(
-        tags=["Home"],
-        summary="Home katalog",
+        tags=["Catalog"],
+        summary="Catalog",
         responses=HomeKatalogSwaggerSerializer,
         examples=[
             OpenApiExample(
-                "Home katalog",
+                "Catalog",
                 value={
                     "katalog": HOME_KATALOG_ITEMS,
                     "catalog": {
