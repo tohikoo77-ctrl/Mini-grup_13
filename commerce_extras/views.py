@@ -904,3 +904,86 @@ class UserProfileView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+try:
+    from drf_spectacular.utils import OpenApiExample, extend_schema
+except ImportError:
+    OpenApiExample = None
+
+    def extend_schema(*args, **kwargs):
+        return lambda view_method: view_method
+
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .serializers import HomeKatalogSwaggerSerializer
+
+
+HOME_KATALOG_ITEMS = [
+    {
+        "title": "Сантехника",
+        "image": "/media/home/katalog/santehnika.png",
+        "url": "/catalog/santehnika/",
+    },
+    {
+        "title": "Отделочные материалы",
+        "image": "/media/home/katalog/otdelochnye-materialy.png",
+        "url": "/catalog/otdelochnye-materialy/",
+    },
+    {
+        "title": "Электротовары",
+        "image": "/media/home/katalog/elektrotovary.png",
+        "url": "/catalog/elektrotovary/",
+    },
+    {
+        "title": "Инструменты",
+        "image": "/media/home/katalog/instrumenty.png",
+        "url": "/catalog/instrumenty/",
+    },
+    {
+        "title": "Столярные изделия",
+        "image": "/media/home/katalog/stolyarnye-izdeliya.png",
+        "url": "/catalog/stolyarnye-izdeliya/",
+    },
+    {
+        "title": "Общестроительные материалы",
+        "image": "/media/home/katalog/obshchestroitelnye-materialy.png",
+        "url": "/catalog/obshchestroitelnye-materialy/",
+    },
+    {
+        "title": "Все для сауны и бани",
+        "image": "/media/home/katalog/sauna-i-banya.png",
+        "url": "/catalog/sauna-i-banya/",
+    },
+]
+
+
+class HomeKatalogAPIView(APIView):
+    @extend_schema(
+        tags=["Home"],
+        summary="Home katalog",
+        responses=HomeKatalogSwaggerSerializer,
+        examples=[
+            OpenApiExample(
+                "Home katalog",
+                value={
+                    "katalog": HOME_KATALOG_ITEMS,
+                    "catalog": {
+                        "title": "Перейти в каталог",
+                        "url": "/catalog/",
+                    },
+                },
+            )
+        ]
+        if OpenApiExample is not None
+        else None,
+    )
+    def get(self, request):
+        return Response(
+            {
+                "katalog": HOME_KATALOG_ITEMS,
+                "catalog": {
+                    "title": "Перейти в каталог",
+                    "url": "/catalog/",
+                },
+            }
+        )
