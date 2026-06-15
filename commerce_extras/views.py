@@ -921,37 +921,37 @@ from .serializers import HomeKatalogSwaggerSerializer
 HOME_KATALOG_ITEMS = [
     {
         "title": "Сантехника",
-        "image": "/media/home/katalog/santehnika.png",
+        "image": "/media/products/mix.jpg",
         "url": "/catalog/santehnika/",
     },
     {
         "title": "Отделочные материалы",
-        "image": "/media/home/katalog/otdelochnye-materialy.png",
+        "image": "/media/products/mix.jpg",
         "url": "/catalog/otdelochnye-materialy/",
     },
     {
         "title": "Электротовары",
-        "image": "/media/home/katalog/elektrotovary.png",
+        "image": "/media/products/mix.jpg",
         "url": "/catalog/elektrotovary/",
     },
     {
         "title": "Инструменты",
-        "image": "/media/home/katalog/instrumenty.png",
+        "image": "/media/products/mix.jpg",
         "url": "/catalog/instrumenty/",
     },
     {
         "title": "Столярные изделия",
-        "image": "/media/home/katalog/stolyarnye-izdeliya.png",
+        "image": "/media/products/mix.jpg",
         "url": "/catalog/stolyarnye-izdeliya/",
     },
     {
         "title": "Общестроительные материалы",
-        "image": "/media/home/katalog/obshchestroitelnye-materialy.png",
+        "image": "/media/products/mix.jpg",
         "url": "/catalog/obshchestroitelnye-materialy/",
     },
     {
         "title": "Все для сауны и бани",
-        "image": "/media/home/katalog/sauna-i-banya.png",
+        "image": "/media/products/mix.jpg",
         "url": "/catalog/sauna-i-banya/",
     },
 ]
