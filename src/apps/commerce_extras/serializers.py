@@ -301,10 +301,10 @@ def swagger_serializer(*args, **kwargs):
 @swagger_serializer(
     examples=[
         OpenApiExample(
-            "Home category",
+            "Home katalog item",
             value={
                 "title": "Сантехника",
-                "image": "/media/home/categories/plumbing.png",
+                "image": "/media/home/katalog/plumbing.png",
                 "url": "/catalog/santehnika/",
             },
         ),
@@ -320,7 +320,7 @@ def swagger_serializer(*args, **kwargs):
     if OpenApiExample is not None
     else None,
 )
-class HomeCategorySerializer(serializers.Serializer):
+class HomeKatalogItemSerializer(serializers.Serializer):
     title = serializers.CharField()
     image = serializers.ImageField(required=False, allow_null=True)
     url = serializers.CharField(required=False)
@@ -329,7 +329,7 @@ class HomeCategorySerializer(serializers.Serializer):
 @swagger_serializer(
     examples=[
         OpenApiExample(
-            "Home catalog shortcut",
+            "Home katalog shortcut",
             value={
                 "title": "Перейти в каталог",
                 "url": "/catalog/",
@@ -339,11 +339,11 @@ class HomeCategorySerializer(serializers.Serializer):
     if OpenApiExample is not None
     else None,
 )
-class HomeCatalogShortcutSerializer(serializers.Serializer):
+class HomeKatalogShortcutSerializer(serializers.Serializer):
     title = serializers.CharField(default="Перейти в каталог")
     url = serializers.CharField(default="/catalog/")
 
 
-class HomeCategoriesSwaggerSerializer(serializers.Serializer):
-    categories = HomeCategorySerializer(many=True)
-    catalog = HomeCatalogShortcutSerializer()
+class HomeKatalogSwaggerSerializer(serializers.Serializer):
+    katalog = HomeKatalogItemSerializer(many=True)
+    catalog = HomeKatalogShortcutSerializer()
