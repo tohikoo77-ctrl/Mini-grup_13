@@ -246,8 +246,18 @@ AUTH_USER_MODEL = "user.User"
 
 
 
-CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
-CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
+CORS_ALLOWED_ORIGINS = env.list(
+    "CORS_ALLOWED_ORIGINS",
+    default=[
+        "https://vercel.com/xakimovislom824-afks-projects/group-13-main",
+    ],
+)
+CSRF_TRUSTED_ORIGINS = env.list(
+    "CSRF_TRUSTED_ORIGINS",
+    default=[
+        "https://vercel.com/xakimovislom824-afks-projects/group-13-main",
+    ],
+)
 
 if not DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
