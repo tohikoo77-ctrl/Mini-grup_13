@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from datetime import timedelta
+from corsheaders.defaults import default_headers
 import os
 import environ
 env = environ.Env()
@@ -246,18 +247,19 @@ AUTH_USER_MODEL = "user.User"
 
 
 
-CORS_ALLOWED_ORIGINS = env.list(
-    "CORS_ALLOWED_ORIGINS",
-    default=[
-        "https://group-13-main-zeta.vercel.app/",
-    ],
-)
-CSRF_TRUSTED_ORIGINS = env.list(
-    "CSRF_TRUSTED_ORIGINS",
-    default=[
-        "https://group-13-main-zeta.vercel.app/",
-    ],
-)
+CORS_ALLOWED_ORIGINS = [
+    "https://group-13-main-zeta.vercel.app",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://group-13-main-zeta.vercel.app",
+]
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "content-type",
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 if not DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
